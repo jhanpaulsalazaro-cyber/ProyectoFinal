@@ -3,12 +3,12 @@ package uniquindio.edu.co.proyectofinalfx.model;
 import java.time.LocalDate;
 
 public class Venta {
-    // atributos
+    // ATRIBUTOS
     private int codigo;
     private LocalDate fechaHoraVenta;
     private double valorPagado;
 
-    // relaciones
+    // RELACIONES
     private EstadoVenta estadoVenta;
     private Cliente cliente;
     private Operador operador;
@@ -17,8 +17,7 @@ public class Venta {
     private Funcion funcion;
 
     /**
-     * metodo constructor de la clase Venta
-     *
+     * Método constructor de la clase Venta
      * @param codigo         de la venta
      * @param fechaHoraVenta de la venta
      * @param valorPagado    de la venta
@@ -29,7 +28,6 @@ public class Venta {
      * @param asiento        de la venta
      * @param funcion        de la venta
      */
-
     public Venta(int codigo, LocalDate fechaHoraVenta, double valorPagado, EstadoVenta estadoVenta, Cliente cliente, Operador operador, Tarifa tarifa, Asiento asiento, Funcion funcion) {
         this.codigo = codigo;
         this.fechaHoraVenta = fechaHoraVenta;

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Operador extends Trabajador {
-    private List<Venta> listOperadoreVentas;
+    // RELACIONES
+    private List<Venta> listOperadoresVentas;
 
     /**
-     * metodo constructor de la clase Operador
+     * Método constructor de la clase Operador
      *
      * @param documentoIdentidad del operador
      * @param nombre             del operador
@@ -16,25 +17,24 @@ public class Operador extends Trabajador {
      * @param fechaContratacion  del opeador
      * @param salario            del operador
      */
-
     public Operador(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario) {
         super(documentoIdentidad, nombre, codigoEmpleado, fechaContratacion, salario);
 
-        this.listOperadoreVentas= new ArrayList<>();
+        this.listOperadoresVentas= new ArrayList<>();
     }
 
     public List<Venta> getListOperadoreVentas() {
-        return listOperadoreVentas;
+        return listOperadoresVentas;
     }
 
     public void setListOperadoreVentas(List<Venta> listOperadoreVentas) {
-        this.listOperadoreVentas = listOperadoreVentas;
+        this.listOperadoresVentas = listOperadoreVentas;
     }
 
     @Override
     public String toString() {
         return "Operador{" +
-                "listOperadoreVentas=" + listOperadoreVentas +
+                "listOperadoreVentas=" + listOperadoresVentas +
                 '}';
     }
 }

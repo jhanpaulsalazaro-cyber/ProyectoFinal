@@ -4,24 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Asiento {
-
-    // atributos
+    // ATRIBUTOS
     private int codigo, numero;
     private String fila;
 
-    // relaciones
+    // RELACIONES
     private EstadoAsiento estadoAsiento;
 
-
     /**
-     * metodo constructor de la clase Asiento
-     *
+     * Método constructor de la clase Asiento
      * @param codigo        del asiento
      * @param numero        del asiento
      * @param fila          del asiento
      * @param estadoAsiento del asiento
      */
-
     public Asiento(int codigo, int numero, String fila, EstadoAsiento estadoAsiento) {
         this.codigo = codigo;
         this.numero = numero;
@@ -61,7 +57,6 @@ public class Asiento {
     public void setEstadoAsiento(EstadoAsiento estadoAsiento) {
         this.estadoAsiento = estadoAsiento;
     }
-
 
     @Override
     public String toString() {

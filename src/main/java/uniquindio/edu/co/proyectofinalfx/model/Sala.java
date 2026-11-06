@@ -4,24 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sala {
-    // atributos
+    // ATRIBUTOS
     private int codigo, capacidad;
     private String nombre;
 
-    // relaciones
+    // RELACIONES
     private EstadoSala estadoSala;
     private List<Asiento> listSalaAsientos;
     private Administrador administrador;
 
     /**
-     * metodo constructor de la clase Asiento
+     * Método constructor de la clase Asiento
      * @param codigo del aiento
      * @param capacidad del asiento
      * @param nombre del asiento
      * @param estadoSala de la sala
      * @param administrador de la sala o funcion
      */
-
     public Sala(int codigo, int capacidad, String nombre, EstadoSala estadoSala, Administrador administrador) {
         this.codigo = codigo;
         this.capacidad = capacidad;

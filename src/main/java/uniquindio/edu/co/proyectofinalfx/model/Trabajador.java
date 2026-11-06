@@ -3,22 +3,19 @@ package uniquindio.edu.co.proyectofinalfx.model;
 import java.time.LocalDate;
 
 public abstract  class Trabajador extends Persona {
-
-    // atributos
+    // ATRIBUTOS
     private String codigoEmpleado;
     private LocalDate fechaContratacion;
     private double salario;
 
     /**
-     * metodo constructor de la clase trabajador
-     *
+     * Método constructor de la clase trabajador
      * @param documentoIdentidad del trabajador
      * @param nombre             del trabajador
      * @param codigoEmpleado     del trabajador
      * @param fechaContratacion  del trabajador
      * @param salario            del trabajador
      */
-
     public Trabajador(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario) {
         super(documentoIdentidad, nombre);
         this.codigoEmpleado = codigoEmpleado;

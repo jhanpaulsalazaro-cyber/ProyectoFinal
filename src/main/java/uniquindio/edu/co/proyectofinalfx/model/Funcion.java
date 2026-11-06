@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Funcion {
-
-    // atributos
+    // ATRIBUTOS
     private int codigo;
     private LocalDate fecha;
     private LocalTime hora;
     private double valorBase;
 
-    // relaciones
+    // RELACIONES
     private EstadoFuncion estadoFuncion;
     private Administrador administrador;
+    private Sala sala;
+    private Pelicula pelicula;
     private List<Venta> listFuncionVentas;
 
     /**
-     * metodo constructor de la clase funcion
-     *
+     * Método constructor de la clase funcion
      * @param codigo        de la funcion
      * @param fecha         de la funcion
      * @param hora          de la funcion
@@ -28,7 +28,6 @@ public class Funcion {
      * @param estadoFuncion de la funcion
      * @param administrador de la funcion
      */
-
     public Funcion(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador) {
         this.codigo = codigo;
         this.fecha = fecha;

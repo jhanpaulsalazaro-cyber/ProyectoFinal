@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cine {
-    // atributos
+    // ATRIBUTOS
     private String nombre, nit, direccion;
 
-    // relaciones
+    // RELACIONES
     private List<Persona> listCinePersonas;
     private List<Venta> listCineVentas;
     private List<Sala> listCineSalas;
@@ -18,15 +18,12 @@ public class Cine {
     private List<Pelicula> listCinePeliculas;
     private List<Tarifa> listCineTarifas;
 
-
     /**
-     * metodo constructor de la clase Cine
-     *
+     * Método constructor de la clase Cine
      * @param nombre    del cine
      * @param nit       del cine
      * @param direccion del cine
      */
-
     public Cine(String nombre, String nit, String direccion) {
         this.nombre = nombre;
         this.nit = nit;
@@ -40,16 +37,14 @@ public class Cine {
         this.listCineTarifas= new ArrayList<>();
 
     }
-
+    //  ==========================  Crear, Buscar, Borrar CLIENTE   ==========================
     /**
-     * metodo para agregar un cliente al Cine
-     *
+     * Método para agregar un cliente al Cine
      * @param documentoIdentidad del cliente
      * @param nombre             del cliente
      * @param tipoCliente        cliente
      * @return
      */
-
     public boolean agregarClienteAcine(String documentoIdentidad, String nombre, TipoCliente tipoCliente) {
 
         boolean existe = false;
@@ -64,8 +59,7 @@ public class Cine {
     }
 
     /**
-     * metodo para buscar un cliente
-     *
+     * Método para buscar un cliente
      * @param documentoIdentidad del cliente
      * @return
      */
@@ -83,7 +77,7 @@ public class Cine {
     }
 
     /**
-     * metodo para eliminar un cliente del cine
+     * Método para eliminar un cliente del cine
      * @param documentoIdentidad del cliente
      * @return
      */
@@ -100,8 +94,9 @@ public class Cine {
 
     }
 
+    //  ==========================  Crear y Borrar OPERADOR   ==========================
     /**
-     * metodo para agregar un operario al cine
+     * Método para agregar un operario al cine
      * @param documentoIdentidad del operario
      * @param nombre del operario
      * @param codigoEmpleado operario
@@ -109,7 +104,6 @@ public class Cine {
      * @param salario operario
      * @return
      */
-
     public boolean agregarOperario(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario) {
         boolean existe = false;
         Operador operador = buscarOperadorEnCine(documentoIdentidad);
@@ -123,11 +117,10 @@ public class Cine {
     }
 
     /**
-     * metodo para bscar un operador en el cine
+     * Método para buscar un operador en el cine
      * @param documentoIdentidad del operador
      * @return
      */
-
     public Operador buscarOperadorEnCine(String documentoIdentidad){
         Operador encontrado= null;
 
@@ -141,8 +134,9 @@ public class Cine {
         return  encontrado;
     }
 
+    //  ==========================  Agregar y Buscar ADMINISTRADOR   ==========================
     /**
-     * metodo para agregar un administrador al cine
+     * Método para agregar un administrador al cine
      * @param documentoIdentidad del administrador
      * @param nombre del administrador
      * @param codigoEmpleado del administrador
@@ -150,7 +144,6 @@ public class Cine {
      * @param salario del administrador
      * @return
      */
-
     public boolean agregaAdministradoAlCine(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario){
         boolean existe= false;
         Administrador administrador= buscarAdministradorEnCine(documentoIdentidad);
@@ -164,7 +157,7 @@ public class Cine {
     }
 
     /**
-     * metodo para buscar un administrador en el cine
+     * Método para buscar un administrador en el cine
      * @param documentoIdentidad del administrador
      * @return
      */
@@ -183,6 +176,106 @@ public class Cine {
 
     }
 
+    //  ==========================  CRUD PELICULA   ==========================
+    /**
+     * Método para registrar una pelicula
+     * @param listCinePeliculas de peliculas
+     * @param codigo de la pelicula
+     * @param duracion de la pelicula
+     * @param nombre de la pelicula
+     * @param estadoPelicula de la pelicula
+     * @param generoPelicula de la pelicula
+     * @param clasificacionPelicula de la pelicula
+     * @return
+     */
+    public boolean registrarPelicula(List<Pelicula> listCinePeliculas, int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula) {
+        boolean existe = false;
+        Pelicula pelicula = buscarPelicula(listCinePeliculas,codigo);
+
+        if (pelicula == null) {
+            Pelicula pelicula1 = new Pelicula(codigo, duracion, nombre, estadoPelicula, generoPelicula, clasificacionPelicula);
+            listCinePeliculas.add(pelicula1);
+            existe= true;
+        }
+        return existe;
+    }
+
+    /**
+     * Método para buscar una pelicula
+     * @param listCinePeliculas de las peliculas
+     * @param codigo de la pelicula
+     * @return
+     */
+    public Pelicula buscarPelicula(List<Pelicula> listCinePeliculas, int codigo){
+        Pelicula encontrada= null;
+
+        for(int i=0; i<listCinePeliculas.size(); i++){
+            Pelicula pelicula= listCinePeliculas.get(i);
+            if(pelicula.getCodigo()== codigo){
+                encontrada= pelicula;
+            }
+        }
+        return encontrada;
+    }
+
+    /**
+     * Método para consulta peliculas
+     * @param listCinePeliculas de peliculas
+     * @return
+     */
+
+    public List<Pelicula> consultarPeliculas(List<Pelicula> listCinePeliculas){
+        return  listCinePeliculas;
+    }
+
+    /**
+     * Método para modificar una pelicula
+     * @param listCinePeliculas de las peliculas
+     * @param codigo de la pelicula
+     * @param duracion de la pelicula
+     * @param nombre de la pelicula
+     * @param estadoPelicula de la pelicula
+     * @param generoPelicula de la pelicula
+     * @param clasificacionPelicula de la pelicula
+     * @return
+     */
+    public boolean modificarPelicula(List<Pelicula> listCinePeliculas,int codigo,int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula){
+        boolean modificado= false;
+
+        Pelicula pelicula = buscarPelicula(listCinePeliculas, codigo);
+
+        if (pelicula != null) {
+            pelicula.setDuracion(duracion);
+            pelicula.setNombre(nombre);
+            pelicula.setEstadoPelicula(estadoPelicula);
+            pelicula.setGeneroPelicula(generoPelicula);
+            pelicula.setClasificacionPelicula(clasificacionPelicula);
+
+            modificado= true;
+        }
+
+        return modificado;
+    }
+
+    /**
+     * Método para deshabilitar una pelicula
+     * @param listCinePeliculas de las peliculas
+     * @param codigo de las peliculas
+     * @return
+     */
+
+    public boolean deshabilitarPelicula(List<Pelicula> listCinePeliculas, int codigo) {
+
+        boolean deshabilitado= false;
+
+        Pelicula pelicula = buscarPelicula(listCinePeliculas, codigo);
+
+        if (pelicula != null) {
+            pelicula.setEstadoPelicula(EstadoPelicula.NO_DISPONIBLE);
+            return true;
+        }
+        return deshabilitado;
+    }
 
     public String getNombre() {
         return nombre;

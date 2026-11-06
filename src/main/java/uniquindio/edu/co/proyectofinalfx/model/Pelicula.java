@@ -1,29 +1,28 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
 public class Pelicula {
-
-    // atributos
+    // ATRIBUTOS
     private int codigo, duracion;
     private String nombre;
 
 
-    // relaciones
+    // RELACIONES
     private EstadoPelicula estadoPelicula;
     private GeneroPelicula generoPelicula;
     private ClasificacionPelicula clasificacionPelicula;
     private Administrador administrador;
 
     /**
-     * metodo constructor de la clase Pelicula
-     * @param codigo de la pelicula
-     * @param duracion de la pelicula
-     * @param nombre de la pelicula
-     * @param estadoPelicula de la pelicula
-     * @param generoPelicula de la pelicula
-     * @param clasificacionPelicula de la pelicula
+     * Método constructor de la clase Pelicula
+     * @param codigo
+     * @param duracion
+     * @param nombre
+     * @param estadoPelicula
+     * @param generoPelicula
+     * @param clasificacionPelicula
+     * @param administrador
      */
-
-    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula) {
+    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula, Administrador administrador) {
         this.codigo = codigo;
         this.duracion = duracion;
         this.nombre = nombre;

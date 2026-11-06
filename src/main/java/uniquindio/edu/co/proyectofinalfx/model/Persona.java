@@ -1,13 +1,11 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
 public  class Persona {
-
-    // atributos
+    // ATRIBUTOS
     private String documentoIdentidad, nombre;
 
     /**
-     * metodo constructor de la clase Persona
-     *
+     * Método constructor de la clase Persona
      * @param documentoIdentidad de la persona
      * @param nombre             de la persona
      */

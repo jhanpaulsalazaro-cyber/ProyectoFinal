@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente extends Persona {
-    // relaciones
+    // RELACIONES
     private TipoCliente tipoCliente;
 
-
     /**
-     * metodo constructor de la clase Cliente
+     * Método constructor de la clase Cliente
      * @param documentoIdentidad del cliente
      * @param nombre del cliente
      * @param tipoCliente del cliente
      */
-
     public Cliente(String documentoIdentidad, String nombre, TipoCliente tipoCliente) {
         super(documentoIdentidad, nombre);
         this.tipoCliente = tipoCliente;

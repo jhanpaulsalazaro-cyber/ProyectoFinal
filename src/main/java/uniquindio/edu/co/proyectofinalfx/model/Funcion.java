@@ -2,6 +2,7 @@ package uniquindio.edu.co.proyectofinalfx.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Funcion {
@@ -14,17 +15,29 @@ public class Funcion {
 
     // relaciones
     private EstadoFuncion estadoFuncion;
-    private Administrador theAdministradorFuncion;
-    private List<Venta> listVentaFuncion;
+    private Administrador administrador;
+    private List<Venta> listFuncionVentas;
 
-    public Funcion(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador theAdministradorFuncion, List<Venta> listVentaFuncion) {
+    /**
+     * metodo constructor de la clase funcion
+     *
+     * @param codigo        de la funcion
+     * @param fecha         de la funcion
+     * @param hora          de la funcion
+     * @param valorBase     de la funcion
+     * @param estadoFuncion de la funcion
+     * @param administrador de la funcion
+     */
+
+    public Funcion(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.hora = hora;
         this.valorBase = valorBase;
         this.estadoFuncion = estadoFuncion;
-        this.theAdministradorFuncion = theAdministradorFuncion;
-        this.listVentaFuncion = listVentaFuncion;
+        this.administrador = administrador;
+
+        this.listFuncionVentas = new ArrayList<>();
     }
 
     public int getCodigo() {
@@ -67,33 +80,32 @@ public class Funcion {
         this.estadoFuncion = estadoFuncion;
     }
 
-    public Administrador getTheAdministradorFuncion() {
-        return theAdministradorFuncion;
+    public Administrador getAdministrador() {
+        return administrador;
     }
 
-    public void setTheAdministradorFuncion(Administrador theAdministradorFuncion) {
-        this.theAdministradorFuncion = theAdministradorFuncion;
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 
-    public List<Venta> getListVentaFuncion() {
-        return listVentaFuncion;
+    public List<Venta> getListFuncionVentas() {
+        return listFuncionVentas;
     }
 
-    public void setListVentaFuncion(List<Venta> listVentaFuncion) {
-        this.listVentaFuncion = listVentaFuncion;
+    public void setListFuncionVentas(List<Venta> listFuncionVentas) {
+        this.listFuncionVentas = listFuncionVentas;
     }
 
     @Override
     public String toString() {
         return "Funcion{" +
-                "codigo=" + codigo +
-                ", fecha=" + fecha +
-                ", hora=" + hora +
-                ", valorBase=" + valorBase +
-                ", estadoFuncion=" + estadoFuncion +
-                ", theAdministradorFuncion=" + theAdministradorFuncion +
-                ", listVentaFuncion=" + listVentaFuncion +
+                "codigo=" + codigo + "\n" +
+                ", fecha=" + fecha + "\n" +
+                ", hora=" + hora + "\n" +
+                ", valorBase=" + valorBase + "\n" +
+                ", estadoFuncion=" + estadoFuncion + "\n" +
+                ", administrador=" + administrador + "\n" +
+                ", listFuncionVentas=" + listFuncionVentas + "\n" +
                 '}';
     }
 }
-

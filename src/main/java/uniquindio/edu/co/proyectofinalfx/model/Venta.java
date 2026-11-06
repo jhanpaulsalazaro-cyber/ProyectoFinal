@@ -10,22 +10,36 @@ public class Venta {
 
     // relaciones
     private EstadoVenta estadoVenta;
-    private Cliente theClienteVenta;
-    private Operador theOperadorVenta;
-    private Tarifa theTarifaVenta;
-    private Asiento theAsientoVenta;
-    private Funcion theFuncionVenta;
+    private Cliente cliente;
+    private Operador operador;
+    private Tarifa tarifa;
+    private Asiento asiento;
+    private Funcion funcion;
 
-    public Venta(int codigo, LocalDate fechaHoraVenta, double valorPagado, EstadoVenta estadoVenta, Cliente theClienteVenta, Operador theOperadorVenta, Tarifa theTarifaVenta, Asiento theAsientoVenta, Funcion theFuncionVenta) {
+    /**
+     * metodo constructor de la clase Venta
+     *
+     * @param codigo         de la venta
+     * @param fechaHoraVenta de la venta
+     * @param valorPagado    de la venta
+     * @param estadoVenta    de la venta
+     * @param cliente        de la venta
+     * @param operador       de la venta
+     * @param tarifa         de la venta
+     * @param asiento        de la venta
+     * @param funcion        de la venta
+     */
+
+    public Venta(int codigo, LocalDate fechaHoraVenta, double valorPagado, EstadoVenta estadoVenta, Cliente cliente, Operador operador, Tarifa tarifa, Asiento asiento, Funcion funcion) {
         this.codigo = codigo;
         this.fechaHoraVenta = fechaHoraVenta;
         this.valorPagado = valorPagado;
         this.estadoVenta = estadoVenta;
-        this.theClienteVenta = theClienteVenta;
-        this.theOperadorVenta = theOperadorVenta;
-        this.theTarifaVenta = theTarifaVenta;
-        this.theAsientoVenta = theAsientoVenta;
-        this.theFuncionVenta = theFuncionVenta;
+        this.cliente = cliente;
+        this.operador = operador;
+        this.tarifa = tarifa;
+        this.asiento = asiento;
+        this.funcion = funcion;
     }
 
     public int getCodigo() {
@@ -60,59 +74,58 @@ public class Venta {
         this.estadoVenta = estadoVenta;
     }
 
-    public Cliente getTheClienteVenta() {
-        return theClienteVenta;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setTheClienteVenta(Cliente theClienteVenta) {
-        this.theClienteVenta = theClienteVenta;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public Operador getTheOperadorVenta() {
-        return theOperadorVenta;
+    public Operador getOperador() {
+        return operador;
     }
 
-    public void setTheOperadorVenta(Operador theOperadorVenta) {
-        this.theOperadorVenta = theOperadorVenta;
+    public void setOperador(Operador operador) {
+        this.operador = operador;
     }
 
-    public Tarifa getTheTarifaVenta() {
-        return theTarifaVenta;
+    public Tarifa getTarifa() {
+        return tarifa;
     }
 
-    public void setTheTarifaVenta(Tarifa theTarifaVenta) {
-        this.theTarifaVenta = theTarifaVenta;
+    public void setTarifa(Tarifa tarifa) {
+        this.tarifa = tarifa;
     }
 
-    public Asiento getTheAsientoVenta() {
-        return theAsientoVenta;
+    public Asiento getAsiento() {
+        return asiento;
     }
 
-    public void setTheAsientoVenta(Asiento theAsientoVenta) {
-        this.theAsientoVenta = theAsientoVenta;
+    public void setAsiento(Asiento asiento) {
+        this.asiento = asiento;
     }
 
-    public Funcion getTheFuncionVenta() {
-        return theFuncionVenta;
+    public Funcion getFuncion() {
+        return funcion;
     }
 
-    public void setTheFuncionVenta(Funcion theFuncionVenta) {
-        this.theFuncionVenta = theFuncionVenta;
+    public void setFuncion(Funcion funcion) {
+        this.funcion = funcion;
     }
 
     @Override
     public String toString() {
         return "Venta{" +
-                "codigo=" + codigo +
-                ", fechaHoraVenta=" + fechaHoraVenta +
-                ", valorPagado=" + valorPagado +
-                ", estadoVenta=" + estadoVenta +
-                ", theClienteVenta=" + theClienteVenta +
-                ", theOperadorVenta=" + theOperadorVenta +
-                ", theTarifaVenta=" + theTarifaVenta +
-                ", theAsientoVenta=" + theAsientoVenta +
-                ", theFuncionVenta=" + theFuncionVenta +
+                "codigo=" + codigo + "\n" +
+                ", fechaHoraVenta=" + fechaHoraVenta + "\n" +
+                ", valorPagado=" + valorPagado + "\n" +
+                ", estadoVenta=" + estadoVenta + "\n" +
+                ", cliente=" + cliente + "\n" +
+                ", operador=" + operador + "\n" +
+                ", tarifa=" + tarifa + "\n" +
+                ", asiento=" + asiento + "\n" +
+                ", funcion=" + funcion + "\n" +
                 '}';
     }
 }
-

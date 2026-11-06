@@ -1,16 +1,36 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sala {
     // atributos
-    private int codigo,capacidad;
+    private int codigo, capacidad;
     private String nombre;
 
     // relaciones
     private EstadoSala estadoSala;
-    private List<Asiento> listSalaAsiento;
-    private Administrador theAdministradorSala;
+    private List<Asiento> listSalaAsientos;
+    private Administrador administrador;
+
+    /**
+     * metodo constructor de la clase Asiento
+     * @param codigo del aiento
+     * @param capacidad del asiento
+     * @param nombre del asiento
+     * @param estadoSala de la sala
+     * @param administrador de la sala o funcion
+     */
+
+    public Sala(int codigo, int capacidad, String nombre, EstadoSala estadoSala, Administrador administrador) {
+        this.codigo = codigo;
+        this.capacidad = capacidad;
+        this.nombre = nombre;
+        this.estadoSala = estadoSala;
+        this.administrador = administrador;
+
+        this.listSalaAsientos= new ArrayList<>();
+    }
 
     public int getCodigo() {
         return codigo;
@@ -44,43 +64,32 @@ public class Sala {
         this.estadoSala = estadoSala;
     }
 
-    public List<Asiento> getListSalaAsiento() {
-        return listSalaAsiento;
+    public List<Asiento> getListSalaAsientos() {
+        return listSalaAsientos;
     }
 
-    public void setListSalaAsiento(List<Asiento> listSalaAsiento) {
-        this.listSalaAsiento = listSalaAsiento;
+    public void setListSalaAsientos(List<Asiento> listSalaAsientos) {
+        this.listSalaAsientos = listSalaAsientos;
     }
 
-    public Administrador getTheAdministradorSala() {
-        return theAdministradorSala;
+    public Administrador getAdministrador() {
+        return administrador;
     }
 
-    public void setTheAdministradorSala(Administrador theAdministradorSala) {
-        this.theAdministradorSala = theAdministradorSala;
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 
     @Override
     public String toString() {
         return "Sala{" +
-                "codigo=" + codigo +
-                ", capacidad=" + capacidad +
-                ", nombre='" + nombre + '\'' +
-                ", estadoSala=" + estadoSala +
-                ", listSalaAsiento=" + listSalaAsiento +
-                ", theAdministradorSala=" + theAdministradorSala +
+                "codigo=" + codigo + "\n" +
+                ", capacidad=" + capacidad + "\n" +
+                ", nombre='" + nombre + "\n" +
+                ", estadoSala=" + estadoSala + "\n" +
+                ", listSalaAsientos=" + listSalaAsientos + "\n" +
+                ", administrador=" + administrador + "\n" +
                 '}';
-    }
-
-    public Sala(int codigo, int capacidad, String nombre, EstadoSala estadoSala, List<Asiento> listSalaAsiento, Administrador theAdministradorSala) {
-        this.codigo = codigo;
-        this.capacidad = capacidad;
-        this.nombre = nombre;
-        this.estadoSala = estadoSala;
-        this.listSalaAsiento = listSalaAsiento;
-        this.theAdministradorSala = theAdministradorSala;
-
-
     }
 }
 

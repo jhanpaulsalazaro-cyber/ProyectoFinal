@@ -1,31 +1,188 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cine {
     // atributos
-    private String nombre,nit,direccion;
+    private String nombre, nit, direccion;
 
     // relaciones
-    private List<Persona> listCinePersona;
-    private List<Venta> listCineVenta;
+    private List<Persona> listCinePersonas;
+    private List<Venta> listCineVentas;
     private List<Sala> listCineSalas;
-    private List<Asiento> listCineAsiento;
-    private List<Funcion> listCineFuncion;
+    private List<Asiento> listCineAsientos;
+    private List<Funcion> listCineFunciones;
     private List<Pelicula> listCinePeliculas;
+    private List<Tarifa> listCineTarifas;
 
-    public Cine(String nombre, String nit, String direccion, List<Persona> listCinePersona, List<Venta> listCineVenta, List<Sala> listCineSalas, List<Asiento> listCineAsiento, List<Funcion> listCineFuncion, List<Pelicula> listCinePeliculas) {
+
+    /**
+     * metodo constructor de la clase Cine
+     *
+     * @param nombre    del cine
+     * @param nit       del cine
+     * @param direccion del cine
+     */
+
+    public Cine(String nombre, String nit, String direccion) {
         this.nombre = nombre;
         this.nit = nit;
         this.direccion = direccion;
-        this.listCinePersona = listCinePersona;
-        this.listCineVenta = listCineVenta;
-        this.listCineSalas = listCineSalas;
-        this.listCineAsiento = listCineAsiento;
-        this.listCineFuncion = listCineFuncion;
-        this.listCinePeliculas = listCinePeliculas;
+        this.listCinePersonas = new ArrayList<>();
+        this.listCineVentas = new ArrayList<>();
+        this.listCineSalas = new ArrayList<>();
+        this.listCineAsientos = new ArrayList<>();
+        this.listCineFunciones = new ArrayList<>();
+        this.listCinePeliculas = new ArrayList<>();
+        this.listCineTarifas= new ArrayList<>();
+
     }
+
+    /**
+     * metodo para agregar un cliente al Cine
+     *
+     * @param documentoIdentidad del cliente
+     * @param nombre             del cliente
+     * @param tipoCliente        cliente
+     * @return
+     */
+
+    public boolean agregarClienteAcine(String documentoIdentidad, String nombre, TipoCliente tipoCliente) {
+
+        boolean existe = false;
+        Cliente cliente = buscarClienteEnCine(documentoIdentidad);
+
+        if (cliente == null) {
+            Cliente cliente1 = new Cliente(documentoIdentidad, nombre, tipoCliente);
+            listCinePersonas.add(cliente1);
+            existe = true;
+        }
+        return existe;
+    }
+
+    /**
+     * metodo para buscar un cliente
+     *
+     * @param documentoIdentidad del cliente
+     * @return
+     */
+    public Cliente buscarClienteEnCine(String documentoIdentidad) {
+        Cliente encontrado = null;
+
+        for (int i = 0; i < listCinePersonas.size(); i++) {
+            Persona cliente = listCinePersonas.get(i);
+
+            if (cliente.getDocumentoIdentidad().equals(documentoIdentidad)) {
+                encontrado = (Cliente) cliente;
+            }
+        }
+        return encontrado;
+    }
+
+    /**
+     * metodo para eliminar un cliente del cine
+     * @param documentoIdentidad del cliente
+     * @return
+     */
+
+    public boolean eliminarCliente(String documentoIdentidad){
+        boolean eliminado= false;
+        Cliente cliente= buscarClienteEnCine(documentoIdentidad);
+
+        if(cliente!=null){
+            listCinePersonas.remove(cliente);
+            eliminado= true;
+        }
+        return eliminado;
+
+    }
+
+    /**
+     * metodo para agregar un operario al cine
+     * @param documentoIdentidad del operario
+     * @param nombre del operario
+     * @param codigoEmpleado operario
+     * @param fechaContratacion operario
+     * @param salario operario
+     * @return
+     */
+
+    public boolean agregarOperario(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario) {
+        boolean existe = false;
+        Operador operador = buscarOperadorEnCine(documentoIdentidad);
+
+        if(operador==null){
+            Operador operador1= new Operador(documentoIdentidad, nombre, codigoEmpleado, fechaContratacion, salario);
+            listCinePersonas.add(operador1);
+            existe= true;
+        }
+        return  existe;
+    }
+
+    /**
+     * metodo para bscar un operador en el cine
+     * @param documentoIdentidad del operador
+     * @return
+     */
+
+    public Operador buscarOperadorEnCine(String documentoIdentidad){
+        Operador encontrado= null;
+
+        for(int i=0; i<listCinePersonas.size(); i++){
+            Persona operador= listCinePersonas.get(i);
+
+            if(operador.getDocumentoIdentidad().equals(documentoIdentidad)){
+                encontrado= (Operador) operador;
+            }
+        }
+        return  encontrado;
+    }
+
+    /**
+     * metodo para agregar un administrador al cine
+     * @param documentoIdentidad del administrador
+     * @param nombre del administrador
+     * @param codigoEmpleado del administrador
+     * @param fechaContratacion del administrador
+     * @param salario del administrador
+     * @return
+     */
+
+    public boolean agregaAdministradoAlCine(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario){
+        boolean existe= false;
+        Administrador administrador= buscarAdministradorEnCine(documentoIdentidad);
+
+        if(administrador== null){
+            Administrador administrador1= new Administrador(documentoIdentidad, nombre, codigoEmpleado, fechaContratacion, salario);
+            listCinePersonas.add(administrador1);
+            existe= true;
+        }
+        return existe;
+    }
+
+    /**
+     * metodo para buscar un administrador en el cine
+     * @param documentoIdentidad del administrador
+     * @return
+     */
+
+    public Administrador buscarAdministradorEnCine(String documentoIdentidad){
+        Administrador encontrado= null;
+
+        for(int i=0; i<listCinePersonas.size(); i++){
+            Persona administrador= listCinePersonas.get(i);
+
+            if(administrador.getDocumentoIdentidad().equals(documentoIdentidad)){
+                encontrado= (Administrador) administrador;
+            }
+        }
+        return encontrado;
+
+    }
+
 
     public String getNombre() {
         return nombre;
@@ -51,20 +208,20 @@ public class Cine {
         this.direccion = direccion;
     }
 
-    public List<Persona> getListCinePersona() {
-        return listCinePersona;
+    public List<Persona> getListCinePersonas() {
+        return listCinePersonas;
     }
 
-    public void setListCinePersona(List<Persona> listCinePersona) {
-        this.listCinePersona = listCinePersona;
+    public void setListCinePersonas(List<Persona> listCinePersonas) {
+        this.listCinePersonas = listCinePersonas;
     }
 
-    public List<Venta> getListCineVenta() {
-        return listCineVenta;
+    public List<Venta> getListCineVentas() {
+        return listCineVentas;
     }
 
-    public void setListCineVenta(List<Venta> listCineVenta) {
-        this.listCineVenta = listCineVenta;
+    public void setListCineVentas(List<Venta> listCineVentas) {
+        this.listCineVentas = listCineVentas;
     }
 
     public List<Sala> getListCineSalas() {
@@ -75,20 +232,20 @@ public class Cine {
         this.listCineSalas = listCineSalas;
     }
 
-    public List<Asiento> getListCineAsiento() {
-        return listCineAsiento;
+    public List<Asiento> getListCineAsientos() {
+        return listCineAsientos;
     }
 
-    public void setListCineAsiento(List<Asiento> listCineAsiento) {
-        this.listCineAsiento = listCineAsiento;
+    public void setListCineAsientos(List<Asiento> listCineAsientos) {
+        this.listCineAsientos = listCineAsientos;
     }
 
-    public List<Funcion> getListCineFuncion() {
-        return listCineFuncion;
+    public List<Funcion> getListCineFunciones() {
+        return listCineFunciones;
     }
 
-    public void setListCineFuncion(List<Funcion> listCineFuncion) {
-        this.listCineFuncion = listCineFuncion;
+    public void setListCineFunciones(List<Funcion> listCineFunciones) {
+        this.listCineFunciones = listCineFunciones;
     }
 
     public List<Pelicula> getListCinePeliculas() {
@@ -99,18 +256,28 @@ public class Cine {
         this.listCinePeliculas = listCinePeliculas;
     }
 
+    public List<Tarifa> getListCineTarifas() {
+        return listCineTarifas;
+    }
+
+    public void setListCineTarifas(List<Tarifa> listCineTarifas) {
+        this.listCineTarifas = listCineTarifas;
+    }
+
     @Override
     public String toString() {
         return "Cine{" +
-                "nombre='" + nombre + '\'' +
-                ", nit='" + nit + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", listCinePersona=" + listCinePersona +
-                ", listCineVenta=" + listCineVenta +
-                ", listCineSalas=" + listCineSalas +
-                ", listCineAsiento=" + listCineAsiento +
-                ", listCineFuncion=" + listCineFuncion +
-                ", listCinePeliculas=" + listCinePeliculas +
+                "nombre='" + nombre + "\n" +
+                ", nit='" + nit + "\n"  +
+                ", direccion='" + direccion + "\n"  +
+                ", listCinePersonas=" + listCinePersonas + "\n" +
+                ", listCineVentas=" + listCineVentas + "\n" +
+                ", listCineSalas=" + listCineSalas + "\n" +
+                ", listCineAsientos=" + listCineAsientos + "\n" +
+                ", listCineFunciones=" + listCineFunciones + "\n" +
+                ", listCinePeliculas=" + listCinePeliculas + "\n" +
+                ", listCineTarifas=" + listCineTarifas +  "\n" +
                 '}';
     }
 }
+

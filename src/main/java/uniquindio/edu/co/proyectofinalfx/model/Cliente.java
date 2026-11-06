@@ -1,15 +1,24 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente extends Persona {
     // relaciones
     private TipoCliente tipoCliente;
-    private List<Venta> listVentaCliente;
 
-    public Cliente(TipoCliente tipoCliente, List<Venta> listVentaCliente) {
+
+    /**
+     * metodo constructor de la clase Cliente
+     * @param documentoIdentidad del cliente
+     * @param nombre del cliente
+     * @param tipoCliente del cliente
+     */
+
+    public Cliente(String documentoIdentidad, String nombre, TipoCliente tipoCliente) {
+        super(documentoIdentidad, nombre);
         this.tipoCliente = tipoCliente;
-        this.listVentaCliente = listVentaCliente;
+
     }
 
     public TipoCliente getTipoCliente() {
@@ -20,19 +29,11 @@ public class Cliente extends Persona {
         this.tipoCliente = tipoCliente;
     }
 
-    public List<Venta> getListVentaCliente() {
-        return listVentaCliente;
-    }
-
-    public void setListVentaCliente(List<Venta> listVentaCliente) {
-        this.listVentaCliente = listVentaCliente;
-    }
 
     @Override
     public String toString() {
         return "Cliente{" +
-                "tipoCliente=" + tipoCliente +
-                ", listVentaCliente=" + listVentaCliente +
+                "tipoCliente=" + tipoCliente + "\n" +
                 '}';
     }
 }

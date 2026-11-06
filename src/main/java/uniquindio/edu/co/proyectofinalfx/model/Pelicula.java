@@ -3,7 +3,7 @@ package uniquindio.edu.co.proyectofinalfx.model;
 public class Pelicula {
 
     // atributos
-    private int codigo,duracion;
+    private int codigo, duracion;
     private String nombre;
 
 
@@ -11,16 +11,26 @@ public class Pelicula {
     private EstadoPelicula estadoPelicula;
     private GeneroPelicula generoPelicula;
     private ClasificacionPelicula clasificacionPelicula;
-    private Administrador theAdministradorPelicula;
+    private Administrador administrador;
 
-    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula, Administrador theAdministradorPelicula) {
+    /**
+     * metodo constructor de la clase Pelicula
+     * @param codigo de la pelicula
+     * @param duracion de la pelicula
+     * @param nombre de la pelicula
+     * @param estadoPelicula de la pelicula
+     * @param generoPelicula de la pelicula
+     * @param clasificacionPelicula de la pelicula
+     */
+
+    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula) {
         this.codigo = codigo;
         this.duracion = duracion;
         this.nombre = nombre;
         this.estadoPelicula = estadoPelicula;
         this.generoPelicula = generoPelicula;
         this.clasificacionPelicula = clasificacionPelicula;
-        this.theAdministradorPelicula = theAdministradorPelicula;
+        this.administrador = administrador;
     }
 
     public int getCodigo() {
@@ -71,25 +81,27 @@ public class Pelicula {
         this.clasificacionPelicula = clasificacionPelicula;
     }
 
-    public Administrador getTheAdministradorPelicula() {
-        return theAdministradorPelicula;
+    public Administrador getAdministrador() {
+        return administrador;
     }
 
-    public void setTheAdministradorPelicula(Administrador theAdministradorPelicula) {
-        this.theAdministradorPelicula = theAdministradorPelicula;
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 
     @Override
     public String toString() {
         return "Pelicula{" +
-                "codigo=" + codigo +
-                ", duracion=" + duracion +
-                ", nombre='" + nombre + '\'' +
-                ", estadoPelicula=" + estadoPelicula +
-                ", generoPelicula=" + generoPelicula +
-                ", clasificacionPelicula=" + clasificacionPelicula +
-                ", theAdministradorPelicula=" + theAdministradorPelicula +
+                "codigo=" + codigo + "\n" +
+                ", duracion=" + duracion + "\n" +
+                ", nombre='" + nombre + "\n"  +
+                ", estadoPelicula=" + estadoPelicula + "\n" +
+                ", generoPelicula=" + generoPelicula + "\n" +
+                ", clasificacionPelicula=" + clasificacionPelicula + "\n" +
+                ", administrador=" + administrador + "\n" +
                 '}';
     }
 }
+
+
 

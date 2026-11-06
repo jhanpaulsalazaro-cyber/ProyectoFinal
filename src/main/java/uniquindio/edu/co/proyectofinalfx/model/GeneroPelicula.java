@@ -5,5 +5,5 @@ public enum GeneroPelicula {
     COMEDIA,
     DRAMA,
     TERROR,
-    ANIMACION;
+    ANIMACION
 }

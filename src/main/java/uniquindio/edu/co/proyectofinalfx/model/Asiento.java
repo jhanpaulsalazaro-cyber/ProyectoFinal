@@ -1,23 +1,33 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Asiento {
 
     // atributos
-    private int codigo,numero;
+    private int codigo, numero;
     private String fila;
 
     // relaciones
     private EstadoAsiento estadoAsiento;
-     private List<Venta> listVentaAsiento;
 
-    public Asiento(int codigo, int numero, String fila, EstadoAsiento estadoAsiento, List<Venta> listVentaAsiento) {
+
+    /**
+     * metodo constructor de la clase Asiento
+     *
+     * @param codigo        del asiento
+     * @param numero        del asiento
+     * @param fila          del asiento
+     * @param estadoAsiento del asiento
+     */
+
+    public Asiento(int codigo, int numero, String fila, EstadoAsiento estadoAsiento) {
         this.codigo = codigo;
         this.numero = numero;
         this.fila = fila;
         this.estadoAsiento = estadoAsiento;
-        this.listVentaAsiento = listVentaAsiento;
+
     }
 
     public int getCodigo() {
@@ -52,23 +62,14 @@ public class Asiento {
         this.estadoAsiento = estadoAsiento;
     }
 
-    public List<Venta> getListVentaAsiento() {
-        return listVentaAsiento;
-    }
-
-    public void setListVentaAsiento(List<Venta> listVentaAsiento) {
-        this.listVentaAsiento = listVentaAsiento;
-    }
 
     @Override
     public String toString() {
         return "Asiento{" +
-                "codigo=" + codigo +
-                ", numero=" + numero +
-                ", fila='" + fila + '\'' +
-                ", estadoAsiento=" + estadoAsiento +
-                ", listVentaAsiento=" + listVentaAsiento +
+                "codigo=" + codigo + "\n" +
+                ", numero=" + numero + "\n" +
+                ", fila='" + fila + '\'' + "\n" +
+                ", estadoAsiento=" + estadoAsiento + "\n" +
                 '}';
     }
 }
-

@@ -1,7 +1,16 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
-public class Persona {
-    private String documentoIdentidad,nombre;
+public  class Persona {
+
+    // atributos
+    private String documentoIdentidad, nombre;
+
+    /**
+     * metodo constructor de la clase Persona
+     *
+     * @param documentoIdentidad de la persona
+     * @param nombre             de la persona
+     */
 
     public Persona(String documentoIdentidad, String nombre) {
         this.documentoIdentidad = documentoIdentidad;
@@ -22,5 +31,13 @@ public class Persona {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "documentoIdentidad='" + documentoIdentidad + "\n" +
+                ", nombre='" + nombre + "\n"  +
+                '}';
     }
 }

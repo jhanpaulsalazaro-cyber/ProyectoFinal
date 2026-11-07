@@ -2,6 +2,7 @@ package uniquindio.edu.co.proyectofinalfx.model;
 
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -276,6 +277,286 @@ public class Cine {
         }
         return deshabilitado;
     }
+
+
+    //  CRUD SALA
+    /**
+     * Método para buscar una sala en el cine
+     * @param codigo de la sala
+     * @return
+     */
+    public Sala buscarSalaEnCine(int codigo) {
+        Sala encontrada = null;
+
+        for (int i = 0; i < listCineSalas.size(); i++) {
+            Sala sala = listCineSalas.get(i);
+            if (sala.getCodigo() == codigo) {
+                encontrada = sala;
+            }
+        }
+        return encontrada;
+    }
+
+    /**
+     * Método para agregar una sala al cine
+     * @param codigo
+     * @param capacidad
+     * @param nombre
+     * @param estadoSala
+     * @param administrador
+     * @return
+     */
+    public boolean agregarSalaEnCine(int codigo, int capacidad, String nombre, EstadoSala estadoSala, Administrador administrador) {
+        boolean existe = false;
+        Sala sala = buscarSalaEnCine(codigo);
+
+        if (sala == null) {
+            Sala sala1 = new Sala(codigo, capacidad, nombre, estadoSala, administrador);
+            listCineSalas.add(sala1);
+            existe = true;
+        }
+        return existe;
+    }
+
+    /**
+     * Método para modificar una sala
+     * @param codigo
+     * @param capacidad
+     * @param nombre
+     * @param estadoSala
+     * @return
+     */
+    public boolean modificarSala(int codigo, int capacidad, String nombre, EstadoSala estadoSala) {
+        boolean modificado = false;
+        Sala sala = buscarSalaEnCine(codigo);
+
+        if (sala != null) {
+            sala.setCapacidad(capacidad);
+            sala.setNombre(nombre);
+            sala.setEstadoSala(estadoSala);
+            modificado = true;
+        }
+        return modificado;
+    }
+
+    /**
+     * Método para deshabilitar una sala
+     * @param codigo de la sala
+     * @return
+     */
+    public boolean deshabilitarSala(int codigo) {
+        boolean deshabilitado = false;
+        Sala sala = buscarSalaEnCine(codigo);
+
+        if (sala != null) {
+            sala.setEstadoSala(EstadoSala.FUERA_DE_SERVICIO);
+            deshabilitado = true;
+        }
+        return deshabilitado;
+    }
+
+    // GESTIÓN DE TARIFAS
+    /**
+     * Método para buscar una tarifa por tipo de cliente
+     * @param tipoCliente
+     * @return
+     */
+    public Tarifa buscarTarifaEnCine(TipoCliente tipoCliente) {
+        Tarifa encontrada = null;
+
+        for (int i = 0; i < listCineTarifas.size(); i++) {
+            Tarifa tarifa = listCineTarifas.get(i);
+            if (tarifa.tipoCliente() == tipoCliente) {
+                encontrada = tarifa;
+            }
+        }
+        return encontrada;
+    }
+
+    /**
+     * Método para agregar o actualizar una tarifa
+     * @param tipoCliente
+     * @param valor
+     * @return
+     */
+    public boolean agregarTarifaEnCine(TipoCliente tipoCliente, double valor) {
+        boolean agregado = false;
+        Tarifa tarifaExistente = buscarTarifaEnCine(tipoCliente);
+
+        if (tarifaExistente != null) {
+            listCineTarifas.remove(tarifaExistente);
+        }
+
+        Tarifa tarifa1 = new Tarifa(tipoCliente, valor);
+        listCineTarifas.add(tarifa1);
+        agregado = true;
+
+        return agregado;
+    }
+
+    //  GESTIÓN DE FUNCIONES
+    /**
+     * Método para buscar una función en el cine
+     * @param codigo de la función
+     * @return
+     */
+    public Funcion buscarFuncionEnCine(int codigo) {
+        Funcion encontrada = null;
+
+        for (int i = 0; i < listCineFunciones.size(); i++) {
+            Funcion funcion = listCineFunciones.get(i);
+            if (funcion.getCodigo() == codigo) {
+                encontrada = funcion;
+            }
+        }
+        return encontrada;
+    }
+
+    /**
+     * Método para programar una función en el cine
+     * @param codigo
+     * @param fecha
+     * @param hora
+     * @param valorBase
+     * @param estadoFuncion
+     * @param administrador
+     * @param sala
+     * @param pelicula
+     * @return
+     */
+    public boolean programarFuncionEnCine(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador, Sala sala, Pelicula pelicula) {
+        boolean programada = false;
+        Funcion funcionExistente = buscarFuncionEnCine(codigo);
+
+        if (funcionExistente == null && sala != null && sala.getEstadoSala() != EstadoSala.FUERA_DE_SERVICIO) {
+            Funcion funcion1 = new Funcion(codigo, fecha, hora, valorBase, estadoFuncion, administrador, sala, pelicula);
+            listCineFunciones.add(funcion1);
+            programada = true;
+        }
+
+        return programada;
+    }
+
+    /**
+     * Método para consultar funciones por fecha
+     * @param fecha
+     * @return
+     */
+    public List<Funcion> consultarFuncionesPorFecha(LocalDate fecha) {
+        List<Funcion> listaFiltrada = new ArrayList<>();
+
+        for (int i = 0; i < listCineFunciones.size(); i++) {
+            Funcion funcion = listCineFunciones.get(i);
+            if (funcion.getFecha().equals(fecha)) {
+                listaFiltrada.add(funcion);
+            }
+        }
+        return listaFiltrada;
+    }
+
+    //  OPERACIONES DE VENTA Y CANCELACIÓN
+    /**
+     * Método para buscar una venta en el cine
+     * @param codigo de la venta
+     * @return
+     */
+    public Venta buscarVentaEnCine(int codigo) {
+        Venta encontrada = null;
+
+        for (int i = 0; i < listCineVentas.size(); i++) {
+            Venta venta = listCineVentas.get(i);
+            if (venta.getCodigo() == codigo) {
+                encontrada = venta;
+            }
+        }
+        return encontrada;
+    }
+
+    /**
+     * Método para vender una entrada
+     * @param codigoVenta
+     * @param codigoFuncion
+     * @param documentoCliente
+     * @param asiento
+     * @param operador
+     * @return
+     */
+    public Venta venderEntrada(int codigoVenta, int codigoFuncion, String documentoCliente, Asiento asiento, Operador operador) {
+        Venta ventaGenerada = null;
+        Funcion funcion = buscarFuncionEnCine(codigoFuncion);
+        Cliente cliente = buscarClienteEnCine(documentoCliente);
+
+        if (funcion != null && cliente != null && asiento != null && asiento.getEstadoAsiento() == EstadoAsiento.DISPONIBLE) {
+            Tarifa tarifa = buscarTarifaEnCine(cliente.getTipoCliente());
+
+
+            double valorPagado = funcion.getValorBase() + (tarifa != null ? tarifa.valor() : 0);
+
+            asiento.setEstadoAsiento(EstadoAsiento.OCUPADO);
+            ventaGenerada = new Venta(codigoVenta, LocalDate.now(), valorPagado, EstadoVenta.ACTIVA, cliente, operador, tarifa, asiento, funcion);
+
+            listCineVentas.add(ventaGenerada);
+            funcion.getListFuncionVentas().add(ventaGenerada);
+            operador.getListOperadoreVentas().add(ventaGenerada);
+        }
+
+        return ventaGenerada;
+    }
+
+    /**
+     * Método para cancelar una venta
+     * @param codigoVenta
+     * @return
+     */
+    public boolean cancelarVenta(int codigoVenta) {
+        boolean cancelada = false;
+        Venta venta = buscarVentaEnCine(codigoVenta);
+
+        if (venta != null && venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+            venta.setEstadoVenta(EstadoVenta.CANCELADA);
+            if (venta.getAsiento() != null) {
+                venta.getAsiento().setEstadoAsiento(EstadoAsiento.DISPONIBLE);
+            }
+            cancelada = true;
+        }
+
+        return cancelada;
+    }
+
+    // REPORTES
+    /**
+     * Método para calcular el total de entradas vendidas (activas)
+     * @return
+     */
+    public int calcularTotalEntradasVendidas() {
+        int total = 0;
+
+        for (int i = 0; i < listCineVentas.size(); i++) {
+            Venta venta = listCineVentas.get(i);
+            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    /**
+     * Método para calcular el total de ingresos por ventas activas
+     * @return
+     */
+    public double calcularTotalIngresos() {
+        double total = 0;
+
+        for (int i = 0; i < listCineVentas.size(); i++) {
+            Venta venta = listCineVentas.get(i);
+            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+                total = total + venta.getValorPagado();
+            }
+        }
+        return total;
+    }
+
+
 
     public String getNombre() {
         return nombre;

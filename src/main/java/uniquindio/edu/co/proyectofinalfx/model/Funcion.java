@@ -21,14 +21,17 @@ public class Funcion {
 
     /**
      * Método constructor de la clase funcion
+     *
      * @param codigo        de la funcion
      * @param fecha         de la funcion
      * @param hora          de la funcion
      * @param valorBase     de la funcion
      * @param estadoFuncion de la funcion
      * @param administrador de la funcion
+     * @param sala
+     * @param pelicula
      */
-    public Funcion(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador) {
+    public Funcion(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador, Sala sala, Pelicula pelicula) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.hora = hora;

@@ -14,15 +14,15 @@ public class Pelicula {
 
     /**
      * Método constructor de la clase Pelicula
+     *
      * @param codigo
      * @param duracion
      * @param nombre
      * @param estadoPelicula
      * @param generoPelicula
      * @param clasificacionPelicula
-     * @param administrador
      */
-    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula, Administrador administrador) {
+    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula, GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula) {
         this.codigo = codigo;
         this.duracion = duracion;
         this.nombre = nombre;

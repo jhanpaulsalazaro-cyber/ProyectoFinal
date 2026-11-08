@@ -125,5 +125,7 @@ public class Administrador extends Trabajador {
 
 
 
+
+
 }
 

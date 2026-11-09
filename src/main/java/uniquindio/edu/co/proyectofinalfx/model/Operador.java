@@ -38,7 +38,3 @@ public class Operador extends Trabajador {
                 '}';
     }
 }
-
-
-
-

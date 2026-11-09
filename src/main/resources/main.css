@@ -1,0 +1,240 @@
+
+/* ==========================================
+   CINEMAFX - GLOBAL DARK THEME
+   Universidad del Quindío
+   ========================================== */
+
+.root {
+    -fx-font-family: "Segoe UI", Arial;
+    -fx-background-color: #2B2B2B;
+}
+
+/* CONTENEDORES */
+
+.main-container,
+.admin-container,
+.operator-container {
+    -fx-background-color: #2B2B2B;
+}
+
+/* TITULOS */
+
+.main-title {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.main-subtitle {
+    -fx-font-size: 16px;
+    -fx-text-fill: #AAAAAA;
+}
+
+.section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.secondary-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #AAAAAA;
+}
+
+.footer-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #888888;
+}
+
+.total-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* BOTONES */
+
+.button {
+    -fx-background-color: #3C3F41;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 18px;
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+    -fx-border-color: #55585A;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #515659;
+}
+
+.button:pressed {
+    -fx-background-color: #292C2E;
+}
+
+.main-button {
+    -fx-pref-height: 55px;
+    -fx-font-size: 17px;
+}
+
+.secondary-button {
+    -fx-background-color: #35383A;
+}
+
+.danger-button {
+    -fx-background-color: #713D3D;
+}
+
+.danger-button:hover {
+    -fx-background-color: #914A4A;
+}
+
+/* TABPANE */
+
+.tab-pane {
+    -fx-background-color: #2B2B2B;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #222222;
+}
+
+.tab {
+    -fx-background-color: #3C3F41;
+}
+
+.tab .tab-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.tab:selected {
+    -fx-background-color: #55585A;
+}
+
+.tab-content-area {
+    -fx-background-color: #2B2B2B;
+}
+
+/* TABLAS */
+
+.table-view {
+    -fx-background-color: #353535;
+    -fx-control-inner-background: #353535;
+    -fx-table-cell-border-color: #484848;
+    -fx-text-background-color: white;
+    -fx-background-radius: 5px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #3C3F41;
+}
+
+.table-view .column-header {
+    -fx-background-color: #3C3F41;
+    -fx-size: 38px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+
+.table-row-cell {
+    -fx-background-color: #353535;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #303030;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #505D69;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: #AAAAAA;
+}
+
+/* CAMPOS */
+
+.text-field,
+.text-area,
+.combo-box {
+    -fx-background-color: #3C3F41;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #AAAAAA;
+    -fx-border-color: #55585A;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+/* ASIENTOS */
+
+.screen-label {
+    -fx-background-color: #777777;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-padding: 12px;
+    -fx-background-radius: 4px;
+}
+
+.seat-button {
+    -fx-background-color: #3C3F41;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 7px;
+    -fx-cursor: hand;
+}
+
+.seat-button:hover {
+    -fx-background-color: #60686D;
+}
+
+.seat-selected {
+    -fx-background-color: #2878B5;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 7px;
+}
+
+.seat-available {
+    -fx-background-color: #3C3F41;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 4px;
+}
+
+.seat-available,
+.seat-selected {
+    -fx-font-size: 10px;
+}
+
+/* SEPARADORES Y SCROLL */
+
+.separator .line {
+    -fx-border-color: #55585A;
+}
+
+.scroll-pane {
+    -fx-background: #2B2B2B;
+    -fx-background-color: #2B2B2B;
+}
+
+.scroll-bar {
+    -fx-background-color: #2B2B2B;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #55585A;
+    -fx-background-radius: 5px;
+}

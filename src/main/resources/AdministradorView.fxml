@@ -1,0 +1,221 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="uniquindio.edu.co.proyectofinalfx.viewController.AdministradorViewController"
+      stylesheets="@styles/main.css"
+      spacing="18"
+      styleClass="admin-container">
+
+    <padding>
+        <Insets top="22" right="25" bottom="22" left="25"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="15">
+
+        <VBox spacing="4">
+            <Label text="Panel administrativo"
+                   styleClass="section-title"/>
+
+            <Label text="Gestión general de CINEMAFX"
+                   styleClass="secondary-text"/>
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="Volver al inicio"
+                onAction="#volverPrincipal"
+                styleClass="secondary-button"/>
+
+    </HBox>
+
+    <TabPane VBox.vgrow="ALWAYS">
+
+        <!-- PELICULAS -->
+
+        <Tab text="Películas" closable="false">
+            <VBox spacing="14">
+                <padding>
+                    <Insets top="18" right="15"
+                            bottom="15" left="15"/>
+                </padding>
+
+                <Label text="Administración de películas"
+                       styleClass="section-title"/>
+
+                <TableView fx:id="tablaPeliculas"
+                           VBox.vgrow="ALWAYS"
+                           placeholder="No hay películas registradas">
+
+                    <columns>
+                        <TableColumn fx:id="colCodigoPelicula"
+                                     text="Código"
+                                     prefWidth="100"/>
+
+                        <TableColumn fx:id="colNombrePelicula"
+                                     text="Nombre"
+                                     prefWidth="220"/>
+
+                        <TableColumn fx:id="colDuracion"
+                                     text="Duración"
+                                     prefWidth="120"/>
+
+                        <TableColumn fx:id="colGenero"
+                                     text="Género"
+                                     prefWidth="150"/>
+
+                        <TableColumn fx:id="colClasificacion"
+                                     text="Clasificación"
+                                     prefWidth="150"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Agregar película"
+                            onAction="#agregarPelicula"/>
+
+                    <Button text="Editar"
+                            onAction="#editarPelicula"/>
+
+                    <Button text="Eliminar"
+                            styleClass="danger-button"
+                            onAction="#eliminarPelicula"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- SALAS -->
+
+        <Tab text="Salas" closable="false">
+            <VBox spacing="14">
+                <padding>
+                    <Insets top="18" right="15"
+                            bottom="15" left="15"/>
+                </padding>
+
+                <Label text="Administración de salas"
+                       styleClass="section-title"/>
+
+                <TableView fx:id="tablaSalas"
+                           VBox.vgrow="ALWAYS"
+                           placeholder="No hay salas registradas">
+
+                    <columns>
+                        <TableColumn fx:id="colNumeroSala"
+                                     text="Número de sala"
+                                     prefWidth="180"/>
+
+                        <TableColumn fx:id="colCapacidad"
+                                     text="Capacidad"
+                                     prefWidth="180"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Agregar sala"
+                            onAction="#agregarSala"/>
+
+                    <Button text="Editar"
+                            onAction="#editarSala"/>
+
+                    <Button text="Eliminar"
+                            styleClass="danger-button"
+                            onAction="#eliminarSala"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- CLIENTES -->
+
+        <Tab text="Clientes" closable="false">
+            <VBox spacing="14">
+                <padding>
+                    <Insets top="18" right="15"
+                            bottom="15" left="15"/>
+                </padding>
+
+                <Label text="Administración de clientes"
+                       styleClass="section-title"/>
+
+                <TableView fx:id="tablaClientes"
+                           VBox.vgrow="ALWAYS"
+                           placeholder="No hay clientes registrados">
+
+                    <columns>
+                        <TableColumn fx:id="colIdentificacion"
+                                     text="Identificación"
+                                     prefWidth="180"/>
+
+                        <TableColumn fx:id="colNombreCliente"
+                                     text="Nombre"
+                                     prefWidth="220"/>
+
+                        <TableColumn fx:id="colCorreo"
+                                     text="Correo"
+                                     prefWidth="250"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Agregar cliente"
+                            onAction="#agregarCliente"/>
+
+                    <Button text="Editar"
+                            onAction="#editarCliente"/>
+
+                    <Button text="Eliminar"
+                            styleClass="danger-button"
+                            onAction="#eliminarCliente"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- TARIFAS -->
+
+        <Tab text="Tarifas" closable="false">
+            <VBox spacing="14">
+                <padding>
+                    <Insets top="18" right="15"
+                            bottom="15" left="15"/>
+                </padding>
+
+                <Label text="Administración de tarifas"
+                       styleClass="section-title"/>
+
+                <TableView fx:id="tablaTarifas"
+                           VBox.vgrow="ALWAYS"
+                           placeholder="No hay tarifas registradas">
+
+                    <columns>
+                        <TableColumn fx:id="colTipoTarifa"
+                                     text="Tipo de tarifa"
+                                     prefWidth="220"/>
+
+                        <TableColumn fx:id="colValorTarifa"
+                                     text="Valor"
+                                     prefWidth="200"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Agregar tarifa"
+                            onAction="#agregarTarifa"/>
+
+                    <Button text="Actualizar"
+                            onAction="#actualizarTarifa"/>
+
+                    <Button text="Eliminar"
+                            styleClass="danger-button"
+                            onAction="#eliminarTarifa"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+
+</VBox>

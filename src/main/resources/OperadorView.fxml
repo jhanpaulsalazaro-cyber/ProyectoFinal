@@ -1,0 +1,123 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="uniquindio.edu.co.proyectofinalfx.viewController.OperadorViewController"
+            stylesheets="@styles/main.css"
+            styleClass="operator-container">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <padding>
+                <Insets top="20" right="25"
+                        bottom="20" left="25"/>
+            </padding>
+
+            <VBox spacing="4">
+                <Label text="Panel de operador"
+                       styleClass="section-title"/>
+
+                <Label text="Cartelera y venta de boletos"
+                       styleClass="secondary-text"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="Volver al inicio"
+                    onAction="#volverPrincipal"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="22">
+            <padding>
+                <Insets top="10" right="25"
+                        bottom="25" left="25"/>
+            </padding>
+
+            <!-- CARTELERA -->
+
+            <VBox spacing="15"
+                  HBox.hgrow="ALWAYS">
+
+                <Label text="Cartelera disponible"
+                       styleClass="section-title"/>
+
+                <TableView fx:id="tablaCartelera"
+                           VBox.vgrow="ALWAYS"
+                           placeholder="No hay funciones disponibles">
+
+                    <columns>
+                        <TableColumn fx:id="colPelicula"
+                                     text="Película"
+                                     prefWidth="190"/>
+
+                        <TableColumn fx:id="colHorario"
+                                     text="Horario"
+                                     prefWidth="110"/>
+
+                        <TableColumn fx:id="colSala"
+                                     text="Sala"
+                                     prefWidth="90"/>
+                    </columns>
+                </TableView>
+
+                <Button text="Seleccionar función"
+                        onAction="#seleccionarFuncion"
+                        maxWidth="Infinity"/>
+
+            </VBox>
+
+            <!-- SELECCIÓN DE ASIENTOS -->
+
+            <VBox spacing="15"
+                  prefWidth="390">
+
+                <Label text="Selección de asientos"
+                       styleClass="section-title"/>
+
+                <Label text="PANTALLA"
+                       styleClass="screen-label"
+                       maxWidth="Infinity"/>
+
+                <GridPane fx:id="gridAsientos"
+                          alignment="CENTER"
+                          hgap="8"
+                          vgap="8"
+                          VBox.vgrow="ALWAYS"/>
+
+                <HBox spacing="15" alignment="CENTER">
+
+                    <Label text="Disponible"
+                           styleClass="seat-available"/>
+
+                    <Label text="Seleccionado"
+                           styleClass="seat-selected"/>
+
+                </HBox>
+
+                <Separator/>
+
+                <Label fx:id="labelAsientos"
+                       text="Asientos: ninguno"
+                       styleClass="secondary-text"/>
+
+                <Label fx:id="labelTotal"
+                       text="Total: pendiente"
+                       styleClass="total-label"/>
+
+                <Button text="Registrar venta"
+                        onAction="#registrarVenta"
+                        maxWidth="Infinity"/>
+
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>

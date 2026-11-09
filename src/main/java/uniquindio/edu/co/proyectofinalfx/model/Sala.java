@@ -31,6 +31,8 @@ public class Sala {
         this.listSalaAsientos= new ArrayList<>();
     }
 
+
+
     public int getCodigo() {
         return codigo;
     }

@@ -31,7 +31,79 @@ public class Sala {
         this.listSalaAsientos= new ArrayList<>();
     }
 
+    /**
+     * Agregar Asiento
+     */
+    public boolean agregarAsiento(Asiento asiento) {
+        if (asiento == null || buscarAsiento(asiento.getCodigo()) != null || listSalaAsientos.size() >= capacidad) return false;
+        listSalaAsientos.add(asiento);
+        return true;
+    }
 
+    /**
+     * Busacr Asiento
+     */
+    public Asiento buscarAsiento(int codigo) {
+        for (Asiento asiento : listSalaAsientos) {
+            if (asiento.getCodigo() == codigo) return asiento;
+        }
+        return null;
+    }
+
+    /**
+     * Eliminar Asiento
+     */
+    public boolean eliminarAsiento(int codigo) {
+        Asiento asiento = buscarAsiento(codigo);
+        if (asiento == null || asiento.getEstadoAsiento() == EstadoAsiento.OCUPADO) return false;
+        listSalaAsientos.remove(asiento);
+        capacidad--;
+        return true;
+    }
+
+    /**
+     * Cambia la capacidad sin permitir eliminar asientos ocupados.
+     * Devuelve false si la nueva capacidad no es posible.
+     */
+    public boolean ajustarCapacidad(int nuevaCapacidad) {
+        if (nuevaCapacidad <= 0) return false;
+
+        if (nuevaCapacidad < listSalaAsientos.size()) {
+            for (int i = listSalaAsientos.size() - 1; i >= nuevaCapacidad; i--) {
+                if (listSalaAsientos.get(i).getEstadoAsiento() == EstadoAsiento.OCUPADO) return false;
+            }
+            while (listSalaAsientos.size() > nuevaCapacidad) {
+                listSalaAsientos.remove(listSalaAsientos.size() - 1);
+            }
+        } else {
+            for (int codigoAsiento = listSalaAsientos.size() + 1; codigoAsiento <= nuevaCapacidad; codigoAsiento++) {
+                int fila = (codigoAsiento - 1) / 8;
+                int numero = ((codigoAsiento - 1) % 8) + 1;
+                String letra = "" + (char) ('A' + fila);
+                listSalaAsientos.add(new Asiento(codigoAsiento, numero, letra, EstadoAsiento.DISPONIBLE));
+            }
+        }
+
+        capacidad = nuevaCapacidad;
+        return true;
+    }
+
+    /** Genera los asientos una sola vez, de acuerdo con la capacidad de la sala. */
+    public boolean generarAsientos(int cantidadFilas, int asientosPorFila) {
+        if (!listSalaAsientos.isEmpty()) return false;
+        if (cantidadFilas <= 0 || asientosPorFila <= 0) return false;
+        if (cantidadFilas * asientosPorFila < capacidad) return false;
+
+        int codigoAsiento = 1;
+        for (int fila = 0; fila < cantidadFilas && codigoAsiento <= capacidad; fila++) {
+            String letra = "" + (char) ('A' + fila);
+            for (int numero = 1; numero <= asientosPorFila && codigoAsiento <= capacidad; numero++) {
+                agregarAsiento(new Asiento(codigoAsiento, numero, letra, EstadoAsiento.DISPONIBLE));
+                codigoAsiento++;
+            }
+        }
+        return listSalaAsientos.size() == capacidad;
+    }
 
     public int getCodigo() {
         return codigo;

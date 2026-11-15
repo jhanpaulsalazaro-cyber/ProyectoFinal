@@ -39,420 +39,140 @@ public class Cine {
 
     }
 
-    //  ==========================  Agregar y Buscar ADMINISTRADOR   ==========================
     /**
-     * Método para agregar un administrador al cine
-     * @param documentoIdentidad del administrador
-     * @param nombre del administrador
-     * @param codigoEmpleado del administrador
-     * @param fechaContratacion del administrador
-     * @param salario del administrador
-     * @return
+     * Agregar Persona
      */
-    public boolean agregaAdministradoAlCine(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario){
-        boolean existe= false;
-        Administrador administrador= buscarAdministradorEnCine(documentoIdentidad);
+    public boolean agregarPersona(Persona persona) {
+        if (persona == null || buscarPersona(persona.getDocumentoIdentidad()) != null) return false;
+        listCinePersonas.add(persona);
+        return true;
+    }
 
-        if(administrador== null){
-            Administrador administrador1= new Administrador(documentoIdentidad, nombre, codigoEmpleado, fechaContratacion, salario);
-            listCinePersonas.add(administrador1);
-            existe= true;
+    // ------------------------------ BUSCAR ------------------------------
+    /**
+     * Buscar Persona
+     */
+    public Persona buscarPersona(String documento) {
+        if (documento == null) return null;
+        for (Persona persona : listCinePersonas) {
+            if (persona.getDocumentoIdentidad().equals(documento)) return persona;
         }
-        return existe;
+        return null;
     }
 
     /**
-     * Método para buscar un administrador en el cine
-     * @param documentoIdentidad del administrador
-     * @return
+     * Buscar administrador
      */
-
-    public Administrador buscarAdministradorEnCine(String documentoIdentidad){
-        Administrador encontrado= null;
-
-        for(int i=0; i<listCinePersonas.size(); i++){
-            Persona administrador= listCinePersonas.get(i);
-
-            if(administrador.getDocumentoIdentidad().equals(documentoIdentidad)){
-                encontrado= (Administrador) administrador;
-            }
-        }
-        return encontrado;
-
-    }
-
-    // GESTIÓN DE TARIFAS
-    /**
-     * Método para buscar una tarifa por tipo de cliente
-     * @param tipoCliente
-     * @return
-     */
-    public Tarifa buscarTarifaEnCine(TipoCliente tipoCliente) {
-        Tarifa encontrada = null;
-
-        for (int i = 0; i < listCineTarifas.size(); i++) {
-            Tarifa tarifa = listCineTarifas.get(i);
-            if (tarifa.tipoCliente() == tipoCliente) {
-                encontrada = tarifa;
-            }
-        }
-        return encontrada;
+    public Administrador buscarAdministradorEnCine(String documento) {
+        Persona persona = buscarPersona(documento);
+        if (persona != null && persona.getClass() == Administrador.class) return (Administrador) persona;
+        return null;
     }
 
     /**
-     * Método para agregar o actualizar una tarifa
-     * @param tipoCliente
-     * @param valor
-     * @return
+     * Buscar cliente
      */
-    public boolean agregarTarifaEnCine(TipoCliente tipoCliente, double valor) {
-        boolean agregado = false;
-        Tarifa tarifaExistente = buscarTarifaEnCine(tipoCliente);
-
-        if (tarifaExistente != null) {
-            listCineTarifas.remove(tarifaExistente);
-        }
-
-        Tarifa tarifa1 = new Tarifa(tipoCliente, valor);
-        listCineTarifas.add(tarifa1);
-        agregado = true;
-
-        return agregado;
+    public Cliente buscarClienteEnCine(String documento) {
+        Persona persona = buscarPersona(documento);
+        if (persona != null && persona.getClass() == Cliente.class) return (Cliente) persona;
+        return null;
     }
 
-    //  OPERACIONES DE VENTA Y CANCELACIÓN
     /**
-     * Método para buscar una venta en el cine
-     * @param codigo de la venta
-     * @return
+     * Buscar operador
+     */
+    public Operador buscarOperadorEnCine(String documento) {
+        Persona persona = buscarPersona(documento);
+        if (persona != null && persona.getClass() == Operador.class) return (Operador) persona;
+        return null;
+    }
+
+    /**
+     * Buscar Venta
      */
     public Venta buscarVentaEnCine(int codigo) {
-        Venta encontrada = null;
-
-        for (int i = 0; i < listCineVentas.size(); i++) {
-            Venta venta = listCineVentas.get(i);
-            if (venta.getCodigo() == codigo) {
-                encontrada = venta;
-            }
-        }
-        return encontrada;
+        for (Venta venta : listCineVentas) if (venta.getCodigo() == codigo) return venta;
+        return null;
     }
 
     /**
-     * Método para vender una entrada
-     * @param codigoVenta
-     * @param codigoFuncion
-     * @param documentoCliente
-     * @param asiento
-     * @param operador
-     * @return
-     */
-    public Venta venderEntrada(int codigoVenta, int codigoFuncion, String documentoCliente, Asiento asiento, Operador operador) {
-        Venta ventaGenerada = null;
-        Funcion funcion = buscarFuncionEnCine(codigoFuncion);
-        Cliente cliente = buscarClienteEnCine(documentoCliente);
-
-        if (funcion != null && cliente != null && asiento != null && asiento.getEstadoAsiento() == EstadoAsiento.DISPONIBLE) {
-            Tarifa tarifa = buscarTarifaEnCine(cliente.getTipoCliente());
-
-
-            double valorPagado = funcion.getValorBase() + (tarifa != null ? tarifa.valor() : 0);
-
-            asiento.setEstadoAsiento(EstadoAsiento.OCUPADO);
-            ventaGenerada = new Venta(codigoVenta, LocalDate.now(), valorPagado, EstadoVenta.ACTIVA, cliente, operador, tarifa, asiento, funcion);
-
-            listCineVentas.add(ventaGenerada);
-            funcion.getListFuncionVentas().add(ventaGenerada);
-            operador.getListOperadoreVentas().add(ventaGenerada);
-        }
-
-        return ventaGenerada;
-    }
-
-    /**
-     * Método para cancelar una venta
-     * @param codigoVenta
-     * @return
-     */
-    public boolean cancelarVenta(int codigoVenta) {
-        boolean cancelada = false;
-        Venta venta = buscarVentaEnCine(codigoVenta);
-
-        if (venta != null && venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
-            venta.setEstadoVenta(EstadoVenta.CANCELADA);
-            if (venta.getAsiento() != null) {
-                venta.getAsiento().setEstadoAsiento(EstadoAsiento.DISPONIBLE);
-            }
-            cancelada = true;
-        }
-
-        return cancelada;
-    }
-
-    //  CRUD SALA
-    /**
-     * Método para buscar una sala en el cine
-     * @param codigo de la sala
-     * @return
-     */
-    public Sala buscarSalaEnCine(int codigo) {
-        Sala encontrada = null;
-
-        for (int i = 0; i < listCineSalas.size(); i++) {
-            Sala sala = listCineSalas.get(i);
-            if (sala.getCodigo() == codigo) {
-                encontrada = sala;
-            }
-        }
-        return encontrada;
-    }
-
-    /**
-     * Método para agregar una sala al cine
-     * @param codigo
-     * @param capacidad
-     * @param nombre
-     * @param estadoSala
-     * @param administrador
-     * @return
-     */
-    public boolean agregarSalaEnCine(int codigo, int capacidad, String nombre, EstadoSala estadoSala, Administrador administrador) {
-        boolean existe = false;
-        Sala sala = buscarSalaEnCine(codigo);
-
-        if (sala == null) {
-            Sala sala1 = new Sala(codigo, capacidad, nombre, estadoSala, administrador);
-            listCineSalas.add(sala1);
-            existe = true;
-        }
-        return existe;
-    }
-
-    /**
-     * Método para modificar una sala
-     * @param codigo
-     * @param capacidad
-     * @param nombre
-     * @param estadoSala
-     * @return
-     */
-    public boolean modificarSala(int codigo, int capacidad, String nombre, EstadoSala estadoSala) {
-        boolean modificado = false;
-        Sala sala = buscarSalaEnCine(codigo);
-
-        if (sala != null) {
-            sala.setCapacidad(capacidad);
-            sala.setNombre(nombre);
-            sala.setEstadoSala(estadoSala);
-            modificado = true;
-        }
-        return modificado;
-    }
-
-    /**
-     * Método para deshabilitar una sala
-     * @param codigo de la sala
-     * @return
-     */
-    public boolean deshabilitarSala(int codigo) {
-        boolean deshabilitado = false;
-        Sala sala = buscarSalaEnCine(codigo);
-
-        if (sala != null) {
-            sala.setEstadoSala(EstadoSala.FUERA_DE_SERVICIO);
-            deshabilitado = true;
-        }
-        return deshabilitado;
-    }
-
-    //  GESTIÓN DE FUNCIONES
-    /**
-     * Método para buscar una función en el cine
-     * @param codigo de la función
-     * @return
+     * Buscar Funcion
      */
     public Funcion buscarFuncionEnCine(int codigo) {
-        Funcion encontrada = null;
-
-        for (int i = 0; i < listCineFunciones.size(); i++) {
-            Funcion funcion = listCineFunciones.get(i);
-            if (funcion.getCodigo() == codigo) {
-                encontrada = funcion;
-            }
-        }
-        return encontrada;
+        for (Funcion funcion : listCineFunciones) if (funcion.getCodigo() == codigo) return funcion;
+        return null;
     }
 
     /**
-     * Método para programar una función en el cine
-     * @param codigo
-     * @param fecha
-     * @param hora
-     * @param valorBase
-     * @param estadoFuncion
-     * @param administrador
-     * @param sala
-     * @param pelicula
-     * @return
+     * Buscar Sala
      */
-    public boolean programarFuncionEnCine(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador, Sala sala, Pelicula pelicula) {
-        boolean programada = false;
-        Funcion funcionExistente = buscarFuncionEnCine(codigo);
-
-        if (funcionExistente == null && sala != null && sala.getEstadoSala() != EstadoSala.FUERA_DE_SERVICIO) {
-            Funcion funcion1 = new Funcion(codigo, fecha, hora, valorBase, estadoFuncion, administrador, sala, pelicula);
-            listCineFunciones.add(funcion1);
-            programada = true;
-        }
-
-        return programada;
+    public Sala buscarSalaEnCine(int codigo) {
+        for (Sala sala : listCineSalas) if (sala.getCodigo() == codigo) return sala;
+        return null;
     }
 
     /**
-     * Método para consultar funciones por fecha
-     * @param fecha
-     * @return
+     * Buscar pelicula
      */
-    public List<Funcion> consultarFuncionesPorFecha(LocalDate fecha) {
-        List<Funcion> listaFiltrada = new ArrayList<>();
-
-        for (int i = 0; i < listCineFunciones.size(); i++) {
-            Funcion funcion = listCineFunciones.get(i);
-            if (funcion.getFecha().equals(fecha)) {
-                listaFiltrada.add(funcion);
-            }
-        }
-        return listaFiltrada;
+    public Pelicula buscarPeliculaEnCine(int codigo) {
+        for (Pelicula pelicula : listCinePeliculas) if (pelicula.getCodigo() == codigo) return pelicula;
+        return null;
     }
 
-    //  ==========================  Crear, Buscar, Borrar CLIENTE   ==========================
+    // ------------------------------ OTRAS FUNCIONES ------------------------------
     /**
-     * Método para agregar un cliente al Cine
-     * @param documentoIdentidad del cliente
-     * @param nombre             del cliente
-     * @param tipoCliente        cliente
-     * @return
-     */
-    public boolean agregarClienteAcine(String documentoIdentidad, String nombre, TipoCliente tipoCliente) {
-
-        boolean existe = false;
-        Cliente cliente = buscarClienteEnCine(documentoIdentidad);
-
-        if (cliente == null) {
-            Cliente cliente1 = new Cliente(documentoIdentidad, nombre, tipoCliente);
-            listCinePersonas.add(cliente1);
-            existe = true;
-        }
-        return existe;
-    }
-
-    /**
-     * Método para buscar un cliente
-     * @param documentoIdentidad del cliente
-     * @return
-     */
-    public Cliente buscarClienteEnCine(String documentoIdentidad) {
-        Cliente encontrado = null;
-
-        for (int i = 0; i < listCinePersonas.size(); i++) {
-            Persona cliente = listCinePersonas.get(i);
-
-            if (cliente.getDocumentoIdentidad().equals(documentoIdentidad)) {
-                encontrado = (Cliente) cliente;
-            }
-        }
-        return encontrado;
-    }
-
-    //  ==========================  Crear y Borrar OPERADOR   ==========================
-    /**
-     * Método para agregar un operario al cine
-     * @param documentoIdentidad del operario
-     * @param nombre del operario
-     * @param codigoEmpleado operario
-     * @param fechaContratacion operario
-     * @param salario operario
-     * @return
-     */
-    public boolean agregarOperario(String documentoIdentidad, String nombre, String codigoEmpleado, LocalDate fechaContratacion, double salario) {
-        boolean existe = false;
-        Operador operador = buscarOperadorEnCine(documentoIdentidad);
-
-        if(operador==null){
-            Operador operador1= new Operador(documentoIdentidad, nombre, codigoEmpleado, fechaContratacion, salario);
-            listCinePersonas.add(operador1);
-            existe= true;
-        }
-        return  existe;
-    }
-
-    /**
-     * Método para buscar un operador en el cine
-     * @param documentoIdentidad del operador
-     * @return
-     */
-    public Operador buscarOperadorEnCine(String documentoIdentidad){
-        Operador encontrado= null;
-
-        for(int i=0; i<listCinePersonas.size(); i++){
-            Persona operador= listCinePersonas.get(i);
-
-            if(operador.getDocumentoIdentidad().equals(documentoIdentidad)){
-                encontrado= (Operador) operador;
-            }
-        }
-        return  encontrado;
-    }
-
-    /**
-     * Método para eliminar un cliente del cine
-     * @param documentoIdentidad del cliente
-     * @return
-     */
-
-    public boolean eliminarCliente(String documentoIdentidad){
-        boolean eliminado= false;
-        Cliente cliente= buscarClienteEnCine(documentoIdentidad);
-
-        if(cliente!=null){
-            listCinePersonas.remove(cliente);
-            eliminado= true;
-        }
-        return eliminado;
-
-    }
-
-    // REPORTES
-    /**
-     * Método para calcular el total de entradas vendidas (activas)
-     * @return
+     * Calcular Total Entradas Vendidas
      */
     public int calcularTotalEntradasVendidas() {
         int total = 0;
+        for (Venta venta : listCineVentas) if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) total++;
+        return total;
+    }
 
-        for (int i = 0; i < listCineVentas.size(); i++) {
-            Venta venta = listCineVentas.get(i);
-            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
-                total++;
-            }
+    /**
+     * Calcular Total Ingresos
+     */
+    public double calcularTotalIngresos() {
+        double total = 0;
+        for (Venta venta : listCineVentas) {
+            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) total += venta.getValorPagado();
         }
         return total;
     }
 
     /**
-     * Método para calcular el total de ingresos por ventas activas
-     * @return
+     * Buscar pelicula más vendida
      */
-    public double calcularTotalIngresos() {
-        double total = 0;
-
-        for (int i = 0; i < listCineVentas.size(); i++) {
-            Venta venta = listCineVentas.get(i);
-            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
-                total = total + venta.getValorPagado();
+    public Pelicula buscarPeliculaMasVendida() {
+        Pelicula masVendida = null;
+        int mayorCantidad = 0;
+        for (Pelicula pelicula : listCinePeliculas) {
+            int cantidad = 0;
+            for (Venta venta : listCineVentas) {
+                if (venta.getEstadoVenta() == EstadoVenta.ACTIVA
+                        && venta.getFuncion().getPelicula() == pelicula) cantidad++;
+            }
+            if (cantidad > mayorCantidad) {
+                mayorCantidad = cantidad;
+                masVendida = pelicula;
             }
         }
-        return total;
+        return masVendida;
+    }
+
+    /**
+     * Consultar funciones por fecha
+     */
+    public List<Funcion> consultarFuncionesPorFecha(LocalDate fecha) {
+        // Esta lista temporal es necesaria porque el resultado contiene solo las funciones de la fecha pedida.
+        // No se modifica la lista general de funciones que pertenece a Cine.
+        List<Funcion> funcionesEncontradas = new ArrayList<>();
+        for (Funcion funcion : listCineFunciones) {
+            if (funcion.getFecha().equals(fecha) && funcion.getEstadoFuncion() == EstadoFuncion.PROGRAMADA) {
+                funcionesEncontradas.add(funcion);
+            }
+        }
+        return funcionesEncontradas;
     }
 
     public String getNombre() {

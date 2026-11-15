@@ -1,46 +1,11 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="uniquindio.edu.co.proyectofinalfx.viewController.PrincipalViewController"
-      stylesheets="@styles/main.css"
-      alignment="CENTER"
-      spacing="22"
-      styleClass="main-container">
-
-    <padding>
-        <Insets top="40" right="40" bottom="40" left="40"/>
-    </padding>
-
-    <Label text="CINEMAFX"
-           styleClass="main-title"/>
-
-    <Label text="TRABAJO UNIVERSIDAD QUINDÍO"
-           styleClass="main-subtitle"/>
-
-    <VBox alignment="CENTER"
-          spacing="16"
-          maxWidth="320">
-
-        <Button text="ADMINISTRADOR"
-                onAction="#abrirAdministrador"
-                styleClass="main-button"
-                maxWidth="Infinity"/>
-
-        <Button text="OPERADOR"
-                onAction="#abrirOperador"
-                styleClass="main-button"
-                maxWidth="Infinity"/>
-
-    </VBox>
-
-    <Label text="Sistema de gestión cinematográfica"
-           styleClass="footer-text"/>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" spacing="22" stylesheets="@main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniquindio.edu.co.proyectofinalfx.viewController.PrincipalViewController">
+    <padding><Insets top="35" right="35" bottom="35" left="35"/></padding>
+    <Label text="CINEMAFX" styleClass="main-title"/>
+    <Label text="Sistema de gestión de CINEMAUQ" styleClass="subtitle"/>
+    <Button text="Administrador" onAction="#abrirAdministrador" prefWidth="240"/>
+    <Button text="Operador" onAction="#abrirOperador" prefWidth="240"/>
 </VBox>

@@ -42,9 +42,46 @@ public class Funcion {
         this.listFuncionVentas = new ArrayList<>();
     }
 
-    public int getCodigo() {
-        return codigo;
+    /**
+     * Asiento Disponible en la función
+     */
+    public boolean asientoEstaDisponible(Asiento asiento) {
+        if (asiento == null || sala == null || !sala.getListSalaAsientos().contains(asiento)) return false;
+        for (Venta venta : listFuncionVentas) {
+            if (venta.getAsiento() == asiento && venta.getEstadoVenta() == EstadoVenta.ACTIVA) return false;
+        }
+        return true;
     }
+
+    /**
+     * Contar Asientos Ocupados
+     */
+    public int contarAsientosOcupados() {
+        int total = 0;
+        for (Venta venta : listFuncionVentas) {
+            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) total++;
+        }
+        return total;
+    }
+
+    /**
+     * Contar Asiento Disponible
+     */
+    public int contarAsientosDisponibles() {
+        if (sala == null) return 0;
+        return sala.getListSalaAsientos().size() - contarAsientosOcupados();
+    }
+
+    /**
+     * Calcular Porcentaje Ocupación
+     */
+    public double calcularPorcentajeOcupacion() {
+        if (sala == null || sala.getListSalaAsientos().isEmpty()) return 0;
+        return (double) contarAsientosOcupados() * 100 / sala.getListSalaAsientos().size();
+    }
+
+
+    public int getCodigo() {return codigo;}
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;

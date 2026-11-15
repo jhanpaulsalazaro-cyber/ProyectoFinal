@@ -1,4 +1,3 @@
-
 package uniquindio.edu.co.proyectofinalfx.viewController;
 
 import javafx.application.Application;
@@ -27,7 +26,7 @@ public class App extends Application {
 
         FXMLLoader loader = new FXMLLoader(recurso);
 
-        Scene scene = new Scene(loader.load(), 1000, 650);
+        Scene scene = new Scene(loader.load(), 900, 650);
 
         stage.setTitle("CINEMAFX | Universidad del Quindío");
         stage.setMinWidth(850);

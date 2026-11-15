@@ -1,9 +1,13 @@
+
 package uniquindio.edu.co.proyectofinalfx.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Sala {
+
     // ATRIBUTOS
     private int codigo, capacidad;
     private String nombre;
@@ -14,73 +18,137 @@ public class Sala {
     private Administrador administrador;
 
     /**
-     * Método constructor de la clase Asiento
-     * @param codigo del aiento
-     * @param capacidad del asiento
-     * @param nombre del asiento
-     * @param estadoSala de la sala
-     * @param administrador de la sala o funcion
+     * Constructor de la clase Sala.
      */
-    public Sala(int codigo, int capacidad, String nombre, EstadoSala estadoSala, Administrador administrador) {
+    public Sala(int codigo, int capacidad, String nombre,
+                EstadoSala estadoSala, Administrador administrador) {
+
         this.codigo = codigo;
         this.capacidad = capacidad;
         this.nombre = nombre;
         this.estadoSala = estadoSala;
         this.administrador = administrador;
 
-        this.listSalaAsientos= new ArrayList<>();
+        this.listSalaAsientos = new ArrayList<>();
     }
 
     /**
-     * Agregar Asiento
+     * Agrega un asiento si cumple las condiciones de la sala.
      */
     public boolean agregarAsiento(Asiento asiento) {
-        if (asiento == null || buscarAsiento(asiento.getCodigo()) != null || listSalaAsientos.size() >= capacidad) return false;
+
+        if (asiento == null || listSalaAsientos == null) {
+            return false;
+        }
+
+        if (listSalaAsientos.size() >= capacidad) {
+            return false;
+        }
+
+        if (buscarAsiento(asiento.getCodigo()) != null) {
+            return false;
+        }
+
+        for (Asiento asientoExistente : listSalaAsientos) {
+
+            if (asientoExistente.getNumero() == asiento.getNumero()
+                    && asientoExistente.getFila().equalsIgnoreCase(asiento.getFila())) {
+                return false;
+            }
+        }
+
         listSalaAsientos.add(asiento);
         return true;
     }
 
     /**
-     * Busacr Asiento
+     * Busca un asiento por su código.
      */
     public Asiento buscarAsiento(int codigo) {
-        for (Asiento asiento : listSalaAsientos) {
-            if (asiento.getCodigo() == codigo) return asiento;
+
+        if (listSalaAsientos == null) {
+            return null;
         }
+
+        for (Asiento asiento : listSalaAsientos) {
+
+            if (asiento != null && asiento.getCodigo() == codigo) {
+                return asiento;
+            }
+        }
+
         return null;
     }
 
     /**
-     * Eliminar Asiento
+     * Elimina un asiento únicamente si no está ocupado.
      */
     public boolean eliminarAsiento(int codigo) {
+
         Asiento asiento = buscarAsiento(codigo);
-        if (asiento == null || asiento.getEstadoAsiento() == EstadoAsiento.OCUPADO) return false;
+
+        if (asiento == null) {
+            return false;
+        }
+
+        if (asiento.getEstadoAsiento() == EstadoAsiento.OCUPADO) {
+            return false;
+        }
+
         listSalaAsientos.remove(asiento);
         capacidad--;
+
         return true;
     }
 
     /**
-     * Cambia la capacidad sin permitir eliminar asientos ocupados.
-     * Devuelve false si la nueva capacidad no es posible.
+     * Ajusta la capacidad de la sala.
+     * No permite eliminar asientos ocupados.
      */
     public boolean ajustarCapacidad(int nuevaCapacidad) {
-        if (nuevaCapacidad <= 0) return false;
 
+        if (nuevaCapacidad <= 0 || listSalaAsientos == null) {
+            return false;
+        }
+
+        // Reducir capacidad
         if (nuevaCapacidad < listSalaAsientos.size()) {
-            for (int i = listSalaAsientos.size() - 1; i >= nuevaCapacidad; i--) {
-                if (listSalaAsientos.get(i).getEstadoAsiento() == EstadoAsiento.OCUPADO) return false;
+
+            for (int i = nuevaCapacidad; i < listSalaAsientos.size(); i++) {
+
+                Asiento asiento = listSalaAsientos.get(i);
+
+                if (asiento.getEstadoAsiento() == EstadoAsiento.OCUPADO) {
+                    return false;
+                }
             }
+
             while (listSalaAsientos.size() > nuevaCapacidad) {
                 listSalaAsientos.remove(listSalaAsientos.size() - 1);
             }
-        } else {
-            for (int codigoAsiento = listSalaAsientos.size() + 1; codigoAsiento <= nuevaCapacidad; codigoAsiento++) {
-                int fila = (codigoAsiento - 1) / 8;
-                int numero = ((codigoAsiento - 1) % 8) + 1;
-                String letra = "" + (char) ('A' + fila);
-                listSalaAsientos.add(new Asiento(codigoAsiento, numero, letra, EstadoAsiento.DISPONIBLE));
+        }
+
+        // Aumentar capacidad
+        else if (nuevaCapacidad > listSalaAsientos.size()) {
+
+            while (listSalaAsientos.size() < nuevaCapacidad) {
+
+                int indice = listSalaAsientos.size();
+
+                int numero = (indice % 8) + 1;
+                int numeroFila = indice / 8;
+
+                String fila = obtenerNombreFila(numeroFila);
+                int nuevoCodigo = obtenerSiguienteCodigo();
+
+                Asiento nuevoAsiento = new Asiento(
+                        nuevoCodigo,
+                        numero,
+                        fila,
+                        EstadoAsiento.DISPONIBLE
+                );
+
+                listSalaAsientos.add(nuevoAsiento);
             }
         }
 
@@ -88,29 +156,96 @@ public class Sala {
         return true;
     }
 
-    /** Genera los asientos una sola vez, de acuerdo con la capacidad de la sala. */
+    /**
+     * Genera los asientos de acuerdo con las filas y los asientos por fila.
+     */
     public boolean generarAsientos(int cantidadFilas, int asientosPorFila) {
-        if (!listSalaAsientos.isEmpty()) return false;
-        if (cantidadFilas <= 0 || asientosPorFila <= 0) return false;
-        if (cantidadFilas * asientosPorFila < capacidad) return false;
+
+        if (listSalaAsientos == null || !listSalaAsientos.isEmpty()) {
+            return false;
+        }
+
+        if (capacidad <= 0 || cantidadFilas <= 0 || asientosPorFila <= 0) {
+            return false;
+        }
+
+        if ((long) cantidadFilas * asientosPorFila < capacidad) {
+            return false;
+        }
+
+        List<Asiento> nuevosAsientos = new ArrayList<>();
 
         int codigoAsiento = 1;
+
         for (int fila = 0; fila < cantidadFilas && codigoAsiento <= capacidad; fila++) {
-            String letra = "" + (char) ('A' + fila);
-            for (int numero = 1; numero <= asientosPorFila && codigoAsiento <= capacidad; numero++) {
-                agregarAsiento(new Asiento(codigoAsiento, numero, letra, EstadoAsiento.DISPONIBLE));
+
+            String nombreFila = obtenerNombreFila(fila);
+
+            for (int numero = 1;
+                 numero <= asientosPorFila && codigoAsiento <= capacidad;
+                 numero++) {
+
+                nuevosAsientos.add(new Asiento(
+                        codigoAsiento,
+                        numero,
+                        nombreFila,
+                        EstadoAsiento.DISPONIBLE
+                ));
+
                 codigoAsiento++;
             }
         }
-        return listSalaAsientos.size() == capacidad;
+
+        if (nuevosAsientos.size() != capacidad) {
+            return false;
+        }
+
+        listSalaAsientos.addAll(nuevosAsientos);
+        return true;
     }
+
+    /**
+     * Obtiene el siguiente código disponible para un asiento.
+     */
+    private int obtenerSiguienteCodigo() {
+
+        int mayorCodigo = 0;
+
+        for (Asiento asiento : listSalaAsientos) {
+
+            if (asiento.getCodigo() > mayorCodigo) {
+                mayorCodigo = asiento.getCodigo();
+            }
+        }
+
+        return mayorCodigo + 1;
+    }
+
+    /**
+     * Convierte el número de fila en letras: A, B, C... Z, AA, AB...
+     */
+    private String obtenerNombreFila(int indice) {
+
+        StringBuilder nombreFila = new StringBuilder();
+
+        do {
+            nombreFila.insert(0, (char) ('A' + indice % 26));
+            indice = (indice / 26) - 1;
+        } while (indice >= 0);
+
+        return nombreFila.toString();
+    }
+
+    // GETTERS Y SETTERS
 
     public int getCodigo() {
         return codigo;
     }
 
     public void setCodigo(int codigo) {
-        this.codigo = codigo;
+        if (codigo > 0) {
+            this.codigo = codigo;
+        }
     }
 
     public int getCapacidad() {
@@ -118,7 +253,7 @@ public class Sala {
     }
 
     public void setCapacidad(int capacidad) {
-        this.capacidad = capacidad;
+        ajustarCapacidad(capacidad);
     }
 
     public String getNombre() {
@@ -126,7 +261,9 @@ public class Sala {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre.trim();
+        }
     }
 
     public EstadoSala getEstadoSala() {
@@ -134,7 +271,9 @@ public class Sala {
     }
 
     public void setEstadoSala(EstadoSala estadoSala) {
-        this.estadoSala = estadoSala;
+        if (estadoSala != null) {
+            this.estadoSala = estadoSala;
+        }
     }
 
     public List<Asiento> getListSalaAsientos() {
@@ -142,7 +281,38 @@ public class Sala {
     }
 
     public void setListSalaAsientos(List<Asiento> listSalaAsientos) {
-        this.listSalaAsientos = listSalaAsientos;
+
+        if (listSalaAsientos == null) {
+            this.listSalaAsientos = new ArrayList<>();
+            return;
+        }
+
+        if (listSalaAsientos.size() > capacidad) {
+            return;
+        }
+
+        Set<Integer> codigos = new HashSet<>();
+        Set<String> posiciones = new HashSet<>();
+
+        for (Asiento asiento : listSalaAsientos) {
+
+            if (asiento == null || asiento.getEstadoAsiento() == null) {
+                return;
+            }
+
+            if (!codigos.add(asiento.getCodigo())) {
+                return;
+            }
+
+            String posicion = asiento.getFila().toUpperCase()
+                    + "-" + asiento.getNumero();
+
+            if (!posiciones.add(posicion)) {
+                return;
+            }
+        }
+
+        this.listSalaAsientos = new ArrayList<>(listSalaAsientos);
     }
 
     public Administrador getAdministrador() {
@@ -155,14 +325,14 @@ public class Sala {
 
     @Override
     public String toString() {
+
         return "Sala{" +
-                "codigo=" + codigo + "\n" +
-                ", capacidad=" + capacidad + "\n" +
-                ", nombre='" + nombre + "\n" +
-                ", estadoSala=" + estadoSala + "\n" +
-                ", listSalaAsientos=" + listSalaAsientos + "\n" +
-                ", administrador=" + administrador + "\n" +
+                "codigo=" + codigo +
+                ", capacidad=" + capacidad +
+                ", nombre='" + nombre + '\'' +
+                ", estadoSala=" + estadoSala +
+                ", listSalaAsientos=" + listSalaAsientos +
+                ", administrador=" + administrador +
                 '}';
     }
 }
-

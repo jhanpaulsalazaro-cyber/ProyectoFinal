@@ -1,10 +1,11 @@
+
 package uniquindio.edu.co.proyectofinalfx.model;
 
-import java.util.List;
-
 public class Pelicula {
+
     // ATRIBUTOS
-    private int codigo, duracion;
+    private int codigo;
+    private int duracion;
     private String nombre;
 
     // RELACIONES
@@ -13,31 +14,47 @@ public class Pelicula {
     private ClasificacionPelicula clasificacionPelicula;
     private Administrador administrador;
 
-    /**
-     * Método constructor de la clase Pelicula
-     * @param codigo
-     * @param duracion
-     * @param nombre
-     * @param estadoPelicula
-     * @param generoPelicula
-     * @param clasificacionPelicula
-     */
-    public Pelicula(int codigo, int duracion, String nombre, EstadoPelicula estadoPelicula,
-                    GeneroPelicula generoPelicula, ClasificacionPelicula clasificacionPelicula) {
+    // CONSTRUCTOR
+    public Pelicula(int codigo, int duracion, String nombre,
+                    EstadoPelicula estadoPelicula,
+                    GeneroPelicula generoPelicula,
+                    ClasificacionPelicula clasificacionPelicula) {
+
+        if (codigo <= 0) {
+            throw new IllegalArgumentException("El código debe ser positivo.");
+        }
+
+        if (duracion <= 0) {
+            throw new IllegalArgumentException("La duración debe ser positiva.");
+        }
+
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre de la película es obligatorio.");
+        }
+
+        if (estadoPelicula == null || generoPelicula == null
+                || clasificacionPelicula == null) {
+            throw new IllegalArgumentException("Los datos de la película no pueden ser nulos.");
+        }
+
         this.codigo = codigo;
         this.duracion = duracion;
-        this.nombre = nombre;
+        this.nombre = nombre.trim();
         this.estadoPelicula = estadoPelicula;
         this.generoPelicula = generoPelicula;
         this.clasificacionPelicula = clasificacionPelicula;
     }
+
+    // GETTERS Y SETTERS
 
     public int getCodigo() {
         return codigo;
     }
 
     public void setCodigo(int codigo) {
-        this.codigo = codigo;
+        if (codigo > 0) {
+            this.codigo = codigo;
+        }
     }
 
     public int getDuracion() {
@@ -45,7 +62,9 @@ public class Pelicula {
     }
 
     public void setDuracion(int duracion) {
-        this.duracion = duracion;
+        if (duracion > 0) {
+            this.duracion = duracion;
+        }
     }
 
     public String getNombre() {
@@ -53,7 +72,9 @@ public class Pelicula {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre.trim();
+        }
     }
 
     public EstadoPelicula getEstadoPelicula() {
@@ -61,7 +82,9 @@ public class Pelicula {
     }
 
     public void setEstadoPelicula(EstadoPelicula estadoPelicula) {
-        this.estadoPelicula = estadoPelicula;
+        if (estadoPelicula != null) {
+            this.estadoPelicula = estadoPelicula;
+        }
     }
 
     public GeneroPelicula getGeneroPelicula() {
@@ -69,7 +92,9 @@ public class Pelicula {
     }
 
     public void setGeneroPelicula(GeneroPelicula generoPelicula) {
-        this.generoPelicula = generoPelicula;
+        if (generoPelicula != null) {
+            this.generoPelicula = generoPelicula;
+        }
     }
 
     public ClasificacionPelicula getClasificacionPelicula() {
@@ -77,7 +102,9 @@ public class Pelicula {
     }
 
     public void setClasificacionPelicula(ClasificacionPelicula clasificacionPelicula) {
-        this.clasificacionPelicula = clasificacionPelicula;
+        if (clasificacionPelicula != null) {
+            this.clasificacionPelicula = clasificacionPelicula;
+        }
     }
 
     public Administrador getAdministrador() {
@@ -88,19 +115,18 @@ public class Pelicula {
         this.administrador = administrador;
     }
 
+    // TOSTRING
+
     @Override
     public String toString() {
         return "Pelicula{" +
-                "codigo=" + codigo + "\n" +
-                ", duracion=" + duracion + "\n" +
-                ", nombre='" + nombre + "\n"  +
-                ", estadoPelicula=" + estadoPelicula + "\n" +
-                ", generoPelicula=" + generoPelicula + "\n" +
-                ", clasificacionPelicula=" + clasificacionPelicula + "\n" +
-                ", administrador=" + administrador + "\n" +
+                "codigo=" + codigo +
+                ", duracion=" + duracion +
+                ", nombre='" + nombre + '\'' +
+                ", estadoPelicula=" + estadoPelicula +
+                ", generoPelicula=" + generoPelicula +
+                ", clasificacionPelicula=" + clasificacionPelicula +
+                ", administrador=" + administrador +
                 '}';
     }
 }
-
-
-

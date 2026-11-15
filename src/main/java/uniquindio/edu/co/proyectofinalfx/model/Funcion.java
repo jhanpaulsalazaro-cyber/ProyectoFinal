@@ -1,3 +1,4 @@
+
 package uniquindio.edu.co.proyectofinalfx.model;
 
 import java.time.LocalDate;
@@ -6,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Funcion {
+
     // ATRIBUTOS
     private int codigo;
     private LocalDate fecha;
@@ -20,68 +22,103 @@ public class Funcion {
     private List<Venta> listFuncionVentas;
 
     /**
-     * Método constructor de la clase funcion
-     *
-     * @param codigo        de la funcion
-     * @param fecha         de la funcion
-     * @param hora          de la funcion
-     * @param valorBase     de la funcion
-     * @param estadoFuncion de la funcion
-     * @param administrador de la funcion
-     * @param sala
-     * @param pelicula
+     * Constructor de la clase Funcion.
      */
-    public Funcion(int codigo, LocalDate fecha, LocalTime hora, double valorBase, EstadoFuncion estadoFuncion, Administrador administrador, Sala sala, Pelicula pelicula) {
+    public Funcion(int codigo, LocalDate fecha, LocalTime hora,
+                   double valorBase, EstadoFuncion estadoFuncion,
+                   Administrador administrador, Sala sala,
+                   Pelicula pelicula) {
+
         this.codigo = codigo;
         this.fecha = fecha;
         this.hora = hora;
         this.valorBase = valorBase;
         this.estadoFuncion = estadoFuncion;
         this.administrador = administrador;
+        this.sala = sala;
+        this.pelicula = pelicula;
 
         this.listFuncionVentas = new ArrayList<>();
     }
 
     /**
-     * Asiento Disponible en la función
+     * Verifica si un asiento está disponible para esta función.
      */
     public boolean asientoEstaDisponible(Asiento asiento) {
-        if (asiento == null || sala == null || !sala.getListSalaAsientos().contains(asiento)) return false;
-        for (Venta venta : listFuncionVentas) {
-            if (venta.getAsiento() == asiento && venta.getEstadoVenta() == EstadoVenta.ACTIVA) return false;
+
+        if (asiento == null || sala == null ||
+                sala.getListSalaAsientos() == null) {
+            return false;
         }
+
+        if (!sala.getListSalaAsientos().contains(asiento)) {
+            return false;
+        }
+
+        for (Venta venta : listFuncionVentas) {
+
+            if (venta != null &&
+                    venta.getAsiento() == asiento &&
+                    venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     /**
-     * Contar Asientos Ocupados
+     * Cuenta los asientos ocupados en esta función.
      */
     public int contarAsientosOcupados() {
+
         int total = 0;
+
         for (Venta venta : listFuncionVentas) {
-            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) total++;
+
+            if (venta != null &&
+                    venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+                total++;
+            }
         }
+
         return total;
     }
 
     /**
-     * Contar Asiento Disponible
+     * Cuenta los asientos disponibles en esta función.
      */
     public int contarAsientosDisponibles() {
-        if (sala == null) return 0;
-        return sala.getListSalaAsientos().size() - contarAsientosOcupados();
+
+        if (sala == null || sala.getListSalaAsientos() == null) {
+            return 0;
+        }
+
+        int disponibles = sala.getListSalaAsientos().size()
+                - contarAsientosOcupados();
+
+        return Math.max(disponibles, 0);
     }
 
     /**
-     * Calcular Porcentaje Ocupación
+     * Calcula el porcentaje de ocupación de la función.
      */
     public double calcularPorcentajeOcupacion() {
-        if (sala == null || sala.getListSalaAsientos().isEmpty()) return 0;
-        return (double) contarAsientosOcupados() * 100 / sala.getListSalaAsientos().size();
+
+        if (sala == null || sala.getListSalaAsientos() == null ||
+                sala.getListSalaAsientos().isEmpty()) {
+            return 0;
+        }
+
+        return (double) contarAsientosOcupados() * 100
+                / sala.getListSalaAsientos().size();
     }
 
+    // GETTERS Y SETTERS
 
-    public int getCodigo() {return codigo;}
+    public int getCodigo() {
+        return codigo;
+    }
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
@@ -127,24 +164,44 @@ public class Funcion {
         this.administrador = administrador;
     }
 
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
+
+    public Pelicula getPelicula() {
+        return pelicula;
+    }
+
+    public void setPelicula(Pelicula pelicula) {
+        this.pelicula = pelicula;
+    }
+
     public List<Venta> getListFuncionVentas() {
         return listFuncionVentas;
     }
 
     public void setListFuncionVentas(List<Venta> listFuncionVentas) {
-        this.listFuncionVentas = listFuncionVentas;
+        this.listFuncionVentas = (listFuncionVentas == null)
+                ? new ArrayList<>()
+                : listFuncionVentas;
     }
 
     @Override
     public String toString() {
         return "Funcion{" +
-                "codigo=" + codigo + "\n" +
-                ", fecha=" + fecha + "\n" +
-                ", hora=" + hora + "\n" +
-                ", valorBase=" + valorBase + "\n" +
-                ", estadoFuncion=" + estadoFuncion + "\n" +
-                ", administrador=" + administrador + "\n" +
-                ", listFuncionVentas=" + listFuncionVentas + "\n" +
+                "codigo=" + codigo +
+                ", fecha=" + fecha +
+                ", hora=" + hora +
+                ", valorBase=" + valorBase +
+                ", estadoFuncion=" + estadoFuncion +
+                ", administrador=" + administrador +
+                ", sala=" + sala +
+                ", pelicula=" + pelicula +
+                ", listFuncionVentas=" + listFuncionVentas +
                 '}';
     }
 }

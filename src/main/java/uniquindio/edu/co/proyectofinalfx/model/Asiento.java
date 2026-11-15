@@ -1,9 +1,8 @@
+
 package uniquindio.edu.co.proyectofinalfx.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Asiento {
+
     // ATRIBUTOS
     private int codigo, numero;
     private String fila;
@@ -12,18 +11,26 @@ public class Asiento {
     private EstadoAsiento estadoAsiento;
 
     /**
-     * Método constructor de la clase Asiento
-     * @param codigo        del asiento
-     * @param numero        del asiento
-     * @param fila          del asiento
-     * @param estadoAsiento del asiento
+     * Constructor de la clase Asiento.
      */
     public Asiento(int codigo, int numero, String fila, EstadoAsiento estadoAsiento) {
+
+        if (codigo <= 0 || numero <= 0) {
+            throw new IllegalArgumentException("El código y el número del asiento deben ser positivos.");
+        }
+
+        if (fila == null || fila.isBlank()) {
+            throw new IllegalArgumentException("La fila del asiento es obligatoria.");
+        }
+
+        if (estadoAsiento == null) {
+            throw new IllegalArgumentException("El estado del asiento es obligatorio.");
+        }
+
         this.codigo = codigo;
         this.numero = numero;
-        this.fila = fila;
+        this.fila = fila.trim();
         this.estadoAsiento = estadoAsiento;
-
     }
 
     public int getCodigo() {
@@ -31,7 +38,9 @@ public class Asiento {
     }
 
     public void setCodigo(int codigo) {
-        this.codigo = codigo;
+        if (codigo > 0) {
+            this.codigo = codigo;
+        }
     }
 
     public int getNumero() {
@@ -39,7 +48,9 @@ public class Asiento {
     }
 
     public void setNumero(int numero) {
-        this.numero = numero;
+        if (numero > 0) {
+            this.numero = numero;
+        }
     }
 
     public String getFila() {
@@ -47,7 +58,9 @@ public class Asiento {
     }
 
     public void setFila(String fila) {
-        this.fila = fila;
+        if (fila != null && !fila.isBlank()) {
+            this.fila = fila.trim();
+        }
     }
 
     public EstadoAsiento getEstadoAsiento() {
@@ -55,16 +68,18 @@ public class Asiento {
     }
 
     public void setEstadoAsiento(EstadoAsiento estadoAsiento) {
-        this.estadoAsiento = estadoAsiento;
+        if (estadoAsiento != null) {
+            this.estadoAsiento = estadoAsiento;
+        }
     }
 
     @Override
     public String toString() {
         return "Asiento{" +
-                "codigo=" + codigo + "\n" +
-                ", numero=" + numero + "\n" +
-                ", fila='" + fila + '\'' + "\n" +
-                ", estadoAsiento=" + estadoAsiento + "\n" +
+                "codigo=" + codigo +
+                ", numero=" + numero +
+                ", fila='" + fila + '\'' +
+                ", estadoAsiento=" + estadoAsiento +
                 '}';
     }
 }

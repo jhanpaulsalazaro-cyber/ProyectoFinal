@@ -1,11 +1,12 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Venta {
     // ATRIBUTOS
     private int codigo;
-    private LocalDate fechaHoraVenta;
+    private LocalDateTime fechaHoraVenta;
     private double valorPagado;
 
     // RELACIONES
@@ -28,7 +29,7 @@ public class Venta {
      * @param asiento        de la venta
      * @param funcion        de la venta
      */
-    public Venta(int codigo, LocalDate fechaHoraVenta, double valorPagado, EstadoVenta estadoVenta, Cliente cliente, Operador operador, Tarifa tarifa, Asiento asiento, Funcion funcion) {
+    public Venta(int codigo, LocalDateTime fechaHoraVenta, double valorPagado, EstadoVenta estadoVenta, Cliente cliente, Operador operador, Tarifa tarifa, Asiento asiento, Funcion funcion) {
         this.codigo = codigo;
         this.fechaHoraVenta = fechaHoraVenta;
         this.valorPagado = valorPagado;
@@ -48,11 +49,11 @@ public class Venta {
         this.codigo = codigo;
     }
 
-    public LocalDate getFechaHoraVenta() {
+    public LocalDateTime getFechaHoraVenta() {
         return fechaHoraVenta;
     }
 
-    public void setFechaHoraVenta(LocalDate fechaHoraVenta) {
+    public void setFechaHoraVenta(LocalDateTime fechaHoraVenta) {
         this.fechaHoraVenta = fechaHoraVenta;
     }
 

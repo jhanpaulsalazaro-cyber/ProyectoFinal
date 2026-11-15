@@ -1,26 +1,37 @@
+
 package uniquindio.edu.co.proyectofinalfx.model;
 
-public  class Persona {
+public class Persona {
+
     // ATRIBUTOS
-    private String documentoIdentidad, nombre;
+    private String documentoIdentidad;
+    private String nombre;
 
-    /**
-     * Método constructor de la clase Persona
-     * @param documentoIdentidad de la persona
-     * @param nombre             de la persona
-     */
-
+    // CONSTRUCTOR
     public Persona(String documentoIdentidad, String nombre) {
-        this.documentoIdentidad = documentoIdentidad;
-        this.nombre = nombre;
+
+        if (documentoIdentidad == null || documentoIdentidad.isBlank()) {
+            throw new IllegalArgumentException("El documento de identidad es obligatorio.");
+        }
+
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre es obligatorio.");
+        }
+
+        this.documentoIdentidad = documentoIdentidad.trim();
+        this.nombre = nombre.trim();
     }
+
+    // GETTERS Y SETTERS
 
     public String getDocumentoIdentidad() {
         return documentoIdentidad;
     }
 
     public void setDocumentoIdentidad(String documentoIdentidad) {
-        this.documentoIdentidad = documentoIdentidad;
+        if (documentoIdentidad != null && !documentoIdentidad.isBlank()) {
+            this.documentoIdentidad = documentoIdentidad.trim();
+        }
     }
 
     public String getNombre() {
@@ -28,14 +39,18 @@ public  class Persona {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre.trim();
+        }
     }
+
+    // TOSTRING
 
     @Override
     public String toString() {
         return "Persona{" +
-                "documentoIdentidad='" + documentoIdentidad + "\n" +
-                ", nombre='" + nombre + "\n"  +
+                "documentoIdentidad='" + documentoIdentidad + '\'' +
+                ", nombre='" + nombre + '\'' +
                 '}';
     }
 }

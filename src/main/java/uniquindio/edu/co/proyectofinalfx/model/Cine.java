@@ -1,14 +1,16 @@
+
 package uniquindio.edu.co.proyectofinalfx.model;
 
-
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cine {
+
     // ATRIBUTOS
-    private String nombre, nit, direccion;
+    private String nombre;
+    private String nit;
+    private String direccion;
 
     // RELACIONES
     private List<Persona> listCinePersonas;
@@ -19,168 +21,262 @@ public class Cine {
     private List<Pelicula> listCinePeliculas;
     private List<Tarifa> listCineTarifas;
 
-    /**
-     * Método constructor de la clase Cine
-     * @param nombre    del cine
-     * @param nit       del cine
-     * @param direccion del cine
-     */
+    // CONSTRUCTOR
     public Cine(String nombre, String nit, String direccion) {
         this.nombre = nombre;
         this.nit = nit;
         this.direccion = direccion;
+
         this.listCinePersonas = new ArrayList<>();
         this.listCineVentas = new ArrayList<>();
         this.listCineSalas = new ArrayList<>();
         this.listCineAsientos = new ArrayList<>();
         this.listCineFunciones = new ArrayList<>();
         this.listCinePeliculas = new ArrayList<>();
-        this.listCineTarifas= new ArrayList<>();
-
+        this.listCineTarifas = new ArrayList<>();
     }
 
-    /**
-     * Agregar Persona
-     */
+    // ------------------------------ PERSONAS ------------------------------
+
     public boolean agregarPersona(Persona persona) {
-        if (persona == null || buscarPersona(persona.getDocumentoIdentidad()) != null) return false;
+
+        if (persona == null
+                || persona.getDocumentoIdentidad() == null
+                || persona.getDocumentoIdentidad().isBlank()) {
+            return false;
+        }
+
+        if (buscarPersona(persona.getDocumentoIdentidad()) != null) {
+            return false;
+        }
+
         listCinePersonas.add(persona);
         return true;
     }
 
-    // ------------------------------ BUSCAR ------------------------------
-    /**
-     * Buscar Persona
-     */
     public Persona buscarPersona(String documento) {
-        if (documento == null) return null;
+
+        if (documento == null || documento.isBlank()) {
+            return null;
+        }
+
         for (Persona persona : listCinePersonas) {
-            if (persona.getDocumentoIdentidad().equals(documento)) return persona;
+
+            if (persona != null
+                    && persona.getDocumentoIdentidad() != null
+                    && persona.getDocumentoIdentidad().equals(documento)) {
+
+                return persona;
+            }
         }
+
         return null;
     }
 
-    /**
-     * Buscar administrador
-     */
     public Administrador buscarAdministradorEnCine(String documento) {
+
         Persona persona = buscarPersona(documento);
-        if (persona != null && persona.getClass() == Administrador.class) return (Administrador) persona;
-        return null;
-    }
 
-    /**
-     * Buscar cliente
-     */
-    public Cliente buscarClienteEnCine(String documento) {
-        Persona persona = buscarPersona(documento);
-        if (persona != null && persona.getClass() == Cliente.class) return (Cliente) persona;
-        return null;
-    }
-
-    /**
-     * Buscar operador
-     */
-    public Operador buscarOperadorEnCine(String documento) {
-        Persona persona = buscarPersona(documento);
-        if (persona != null && persona.getClass() == Operador.class) return (Operador) persona;
-        return null;
-    }
-
-    /**
-     * Buscar Venta
-     */
-    public Venta buscarVentaEnCine(int codigo) {
-        for (Venta venta : listCineVentas) if (venta.getCodigo() == codigo) return venta;
-        return null;
-    }
-
-    /**
-     * Buscar Funcion
-     */
-    public Funcion buscarFuncionEnCine(int codigo) {
-        for (Funcion funcion : listCineFunciones) if (funcion.getCodigo() == codigo) return funcion;
-        return null;
-    }
-
-    /**
-     * Buscar Sala
-     */
-    public Sala buscarSalaEnCine(int codigo) {
-        for (Sala sala : listCineSalas) if (sala.getCodigo() == codigo) return sala;
-        return null;
-    }
-
-    /**
-     * Buscar pelicula
-     */
-    public Pelicula buscarPeliculaEnCine(int codigo) {
-        for (Pelicula pelicula : listCinePeliculas) if (pelicula.getCodigo() == codigo) return pelicula;
-        return null;
-    }
-
-    // ------------------------------ OTRAS FUNCIONES ------------------------------
-    /**
-     * Calcular Total Entradas Vendidas
-     */
-    public int calcularTotalEntradasVendidas() {
-        int total = 0;
-        for (Venta venta : listCineVentas) if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) total++;
-        return total;
-    }
-
-    /**
-     * Calcular Total Ingresos
-     */
-    public double calcularTotalIngresos() {
-        double total = 0;
-        for (Venta venta : listCineVentas) {
-            if (venta.getEstadoVenta() == EstadoVenta.ACTIVA) total += venta.getValorPagado();
+        if (persona instanceof Administrador) {
+            return (Administrador) persona;
         }
+
+        return null;
+    }
+
+    public Cliente buscarClienteEnCine(String documento) {
+
+        Persona persona = buscarPersona(documento);
+
+        if (persona instanceof Cliente) {
+            return (Cliente) persona;
+        }
+
+        return null;
+    }
+
+    public Operador buscarOperadorEnCine(String documento) {
+
+        Persona persona = buscarPersona(documento);
+
+        if (persona instanceof Operador) {
+            return (Operador) persona;
+        }
+
+        return null;
+    }
+
+    // ------------------------------ BÚSQUEDAS ------------------------------
+
+    public Venta buscarVentaEnCine(int codigo) {
+
+        if (codigo <= 0) {
+            return null;
+        }
+
+        for (Venta venta : listCineVentas) {
+
+            if (venta != null && venta.getCodigo() == codigo) {
+                return venta;
+            }
+        }
+
+        return null;
+    }
+
+    public Funcion buscarFuncionEnCine(int codigo) {
+
+        if (codigo <= 0) {
+            return null;
+        }
+
+        for (Funcion funcion : listCineFunciones) {
+
+            if (funcion != null && funcion.getCodigo() == codigo) {
+                return funcion;
+            }
+        }
+
+        return null;
+    }
+
+    public Sala buscarSalaEnCine(int codigo) {
+
+        if (codigo <= 0) {
+            return null;
+        }
+
+        for (Sala sala : listCineSalas) {
+
+            if (sala != null && sala.getCodigo() == codigo) {
+                return sala;
+            }
+        }
+
+        return null;
+    }
+
+    public Pelicula buscarPeliculaEnCine(int codigo) {
+
+        if (codigo <= 0) {
+            return null;
+        }
+
+        for (Pelicula pelicula : listCinePeliculas) {
+
+            if (pelicula != null && pelicula.getCodigo() == codigo) {
+                return pelicula;
+            }
+        }
+
+        return null;
+    }
+
+    // ------------------------------ REPORTES ------------------------------
+
+    public int calcularTotalEntradasVendidas() {
+
+        int total = 0;
+
+        for (Venta venta : listCineVentas) {
+
+            if (venta != null
+                    && venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+
+                total++;
+            }
+        }
+
         return total;
     }
 
-    /**
-     * Buscar pelicula más vendida
-     */
+    public double calcularTotalIngresos() {
+
+        double total = 0;
+
+        for (Venta venta : listCineVentas) {
+
+            if (venta != null
+                    && venta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+
+                total += venta.getValorPagado();
+            }
+        }
+
+        return total;
+    }
+
     public Pelicula buscarPeliculaMasVendida() {
+
         Pelicula masVendida = null;
         int mayorCantidad = 0;
+
         for (Pelicula pelicula : listCinePeliculas) {
-            int cantidad = 0;
-            for (Venta venta : listCineVentas) {
-                if (venta.getEstadoVenta() == EstadoVenta.ACTIVA
-                        && venta.getFuncion().getPelicula() == pelicula) cantidad++;
+
+            if (pelicula == null) {
+                continue;
             }
+
+            int cantidad = 0;
+
+            for (Venta venta : listCineVentas) {
+
+                if (venta == null
+                        || venta.getEstadoVenta() != EstadoVenta.ACTIVA
+                        || venta.getFuncion() == null
+                        || venta.getFuncion().getPelicula() == null) {
+
+                    continue;
+                }
+
+                if (venta.getFuncion().getPelicula() == pelicula) {
+                    cantidad++;
+                }
+            }
+
             if (cantidad > mayorCantidad) {
                 mayorCantidad = cantidad;
                 masVendida = pelicula;
             }
         }
+
         return masVendida;
     }
 
-    /**
-     * Consultar funciones por fecha
-     */
+    // ------------------------------ FUNCIONES POR FECHA ------------------------------
+
     public List<Funcion> consultarFuncionesPorFecha(LocalDate fecha) {
-        // Esta lista temporal es necesaria porque el resultado contiene solo las funciones de la fecha pedida.
-        // No se modifica la lista general de funciones que pertenece a Cine.
+
         List<Funcion> funcionesEncontradas = new ArrayList<>();
+
+        if (fecha == null) {
+            return funcionesEncontradas;
+        }
+
         for (Funcion funcion : listCineFunciones) {
-            if (funcion.getFecha().equals(fecha) && funcion.getEstadoFuncion() == EstadoFuncion.PROGRAMADA) {
+
+            if (funcion != null
+                    && funcion.getFecha() != null
+                    && funcion.getFecha().equals(fecha)
+                    && funcion.getEstadoFuncion() == EstadoFuncion.PROGRAMADA) {
+
                 funcionesEncontradas.add(funcion);
             }
         }
+
         return funcionesEncontradas;
     }
+
+    // ------------------------------ GETTERS Y SETTERS ------------------------------
 
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre.trim();
+        }
     }
 
     public String getNit() {
@@ -188,7 +284,9 @@ public class Cine {
     }
 
     public void setNit(String nit) {
-        this.nit = nit;
+        if (nit != null && !nit.isBlank()) {
+            this.nit = nit.trim();
+        }
     }
 
     public String getDireccion() {
@@ -196,7 +294,9 @@ public class Cine {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        if (direccion != null && !direccion.isBlank()) {
+            this.direccion = direccion.trim();
+        }
     }
 
     public List<Persona> getListCinePersonas() {
@@ -204,7 +304,9 @@ public class Cine {
     }
 
     public void setListCinePersonas(List<Persona> listCinePersonas) {
-        this.listCinePersonas = listCinePersonas;
+        this.listCinePersonas = listCinePersonas == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCinePersonas);
     }
 
     public List<Venta> getListCineVentas() {
@@ -212,7 +314,9 @@ public class Cine {
     }
 
     public void setListCineVentas(List<Venta> listCineVentas) {
-        this.listCineVentas = listCineVentas;
+        this.listCineVentas = listCineVentas == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCineVentas);
     }
 
     public List<Sala> getListCineSalas() {
@@ -220,7 +324,9 @@ public class Cine {
     }
 
     public void setListCineSalas(List<Sala> listCineSalas) {
-        this.listCineSalas = listCineSalas;
+        this.listCineSalas = listCineSalas == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCineSalas);
     }
 
     public List<Asiento> getListCineAsientos() {
@@ -228,7 +334,9 @@ public class Cine {
     }
 
     public void setListCineAsientos(List<Asiento> listCineAsientos) {
-        this.listCineAsientos = listCineAsientos;
+        this.listCineAsientos = listCineAsientos == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCineAsientos);
     }
 
     public List<Funcion> getListCineFunciones() {
@@ -236,7 +344,9 @@ public class Cine {
     }
 
     public void setListCineFunciones(List<Funcion> listCineFunciones) {
-        this.listCineFunciones = listCineFunciones;
+        this.listCineFunciones = listCineFunciones == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCineFunciones);
     }
 
     public List<Pelicula> getListCinePeliculas() {
@@ -244,7 +354,9 @@ public class Cine {
     }
 
     public void setListCinePeliculas(List<Pelicula> listCinePeliculas) {
-        this.listCinePeliculas = listCinePeliculas;
+        this.listCinePeliculas = listCinePeliculas == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCinePeliculas);
     }
 
     public List<Tarifa> getListCineTarifas() {
@@ -252,23 +364,27 @@ public class Cine {
     }
 
     public void setListCineTarifas(List<Tarifa> listCineTarifas) {
-        this.listCineTarifas = listCineTarifas;
+        this.listCineTarifas = listCineTarifas == null
+                ? new ArrayList<>()
+                : new ArrayList<>(listCineTarifas);
     }
+
+    // ------------------------------ TOSTRING ------------------------------
 
     @Override
     public String toString() {
+
         return "Cine{" +
-                "nombre='" + nombre + "\n" +
-                ", nit='" + nit + "\n"  +
-                ", direccion='" + direccion + "\n"  +
-                ", listCinePersonas=" + listCinePersonas + "\n" +
-                ", listCineVentas=" + listCineVentas + "\n" +
-                ", listCineSalas=" + listCineSalas + "\n" +
-                ", listCineAsientos=" + listCineAsientos + "\n" +
-                ", listCineFunciones=" + listCineFunciones + "\n" +
-                ", listCinePeliculas=" + listCinePeliculas + "\n" +
-                ", listCineTarifas=" + listCineTarifas +  "\n" +
+                "nombre='" + nombre + '\'' +
+                ", nit='" + nit + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", listCinePersonas=" + listCinePersonas +
+                ", listCineVentas=" + listCineVentas +
+                ", listCineSalas=" + listCineSalas +
+                ", listCineAsientos=" + listCineAsientos +
+                ", listCineFunciones=" + listCineFunciones +
+                ", listCinePeliculas=" + listCinePeliculas +
+                ", listCineTarifas=" + listCineTarifas +
                 '}';
     }
 }
-

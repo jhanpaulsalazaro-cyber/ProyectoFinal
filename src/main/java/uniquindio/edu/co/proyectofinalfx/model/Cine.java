@@ -267,6 +267,184 @@ public class Cine {
         return funcionesEncontradas;
     }
 
+    // ------------------------------ OPERACIONES DEL ADMINISTRADOR ------------------------------
+
+    public boolean registrarPelicula(String documentoAdministrador, Pelicula pelicula) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.registrarPelicula(listCinePeliculas, pelicula);
+    }
+
+    public Pelicula buscarPelicula(String documentoAdministrador, int codigo) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return null;
+        }
+
+        return administrador.buscarPelicula(listCinePeliculas, codigo);
+    }
+
+    public boolean modificarPelicula (String documentoAdministrador, int codigo,
+                                     int duracion, String nombre,
+                                     EstadoPelicula estado, GeneroPelicula genero,
+                                     ClasificacionPelicula clasificacion) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.modificarPelicula(
+                listCinePeliculas, codigo, duracion, nombre,
+                estado, genero, clasificacion
+        );
+    }
+
+    public boolean deshabilitarPelicula(String documentoAdministrador, int codigo) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.deshabilitarPelicula(listCinePeliculas, codigo);
+    }
+
+    public boolean registrarSala(String documentoAdministrador, Sala sala) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.registrarSala(listCineSalas, sala);
+    }
+
+    public Sala buscarSala(String documentoAdministrador, int codigo) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return null;
+        }
+
+        return administrador.buscarSala(listCineSalas, codigo);
+    }
+
+    public boolean modificarSala(String documentoAdministrador, int codigo,
+                                 String nombre, int capacidad, EstadoSala estado) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.modificarSala(
+                listCineSalas, codigo, nombre, capacidad, estado
+        );
+    }
+
+    public boolean deshabilitarSala(String documentoAdministrador, int codigo) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.deshabilitarSala(listCineSalas, codigo);
+    }
+
+    public boolean programarFuncion(String documentoAdministrador, Funcion funcion) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.programarFuncion(listCineFunciones, funcion);
+    }
+
+    public Funcion buscarFuncion(String documentoAdministrador, int codigo) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return null;
+        }
+
+        return administrador.buscarFuncion(listCineFunciones, codigo);
+    }
+
+    public Tarifa buscarTarifa(String documentoAdministrador, TipoCliente tipo) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return null;
+        }
+
+        return administrador.buscarTarifa(listCineTarifas, tipo);
+    }
+
+    public boolean agregarOActualizarTarifa(String documentoAdministrador,
+                                            TipoCliente tipo, double valor) {
+        Administrador administrador = buscarAdministradorEnCine(documentoAdministrador);
+
+        if (administrador == null) {
+            return false;
+        }
+
+        return administrador.agregarOActualizarTarifa(listCineTarifas, tipo, valor);
+    }
+
+    // ------------------------------ OPERACIONES DEL OPERADOR ------------------------------
+
+    public Venta registrarVenta(String documentoOperador, int codigoVenta,
+                                Funcion funcion, Cliente cliente,
+                                Asiento asiento, Tarifa tarifa) {
+        Operador operador = buscarOperadorEnCine(documentoOperador);
+
+        if (operador == null) {
+            return null;
+        }
+
+        return operador.registrarVenta(
+                listCineVentas, codigoVenta, funcion, cliente, asiento, tarifa
+        );
+    }
+
+    public Venta buscarVenta(String documentoOperador, int codigo) {
+        Operador operador = buscarOperadorEnCine(documentoOperador);
+
+        if (operador == null) {
+            return null;
+        }
+
+        return operador.buscarVenta(listCineVentas, codigo);
+    }
+
+    public boolean cancelarVenta(String documentoOperador, int codigo) {
+        Operador operador = buscarOperadorEnCine(documentoOperador);
+
+        if (operador == null) {
+            return false;
+        }
+
+        return operador.cancelarVenta(listCineVentas, codigo);
+    }
+
+    public List<Venta> obtenerVentasOperador(String documentoOperador) {
+        Operador operador = buscarOperadorEnCine(documentoOperador);
+
+        if (operador == null) {
+            return new ArrayList<>();
+        }
+
+        return new ArrayList<>(operador.getListOperadoreVentas());
+    }
+
     // ------------------------------ GETTERS Y SETTERS ------------------------------
 
     public String getNombre() {

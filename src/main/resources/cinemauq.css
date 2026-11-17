@@ -59,3 +59,12 @@
 .seat-free:hover { -fx-background-color:#145244; }
 .seat-selected { -fx-background-color:#f59e0b; -fx-text-fill:#111827; }
 .seat-busy { -fx-background-color:#4a1d28; -fx-text-fill:#fb7185; -fx-opacity:1; }
+.seat { -fx-alignment:center; }
+.hero-title { -fx-text-fill:#f8fafc; -fx-font-size:30px; -fx-font-weight:bold; }
+.role-card { -fx-background-color:#172337; -fx-border-color:#2b3a50; -fx-border-radius:16; -fx-background-radius:16; }
+.role-card:hover { -fx-border-color:#f59e0b; }
+.role-icon { -fx-text-fill:#fbbf24; -fx-font-size:30px; }
+.role-title { -fx-text-fill:white; -fx-font-size:22px; -fx-font-weight:bold; }
+.role-text { -fx-text-fill:#aab6c8; -fx-font-size:12px; -fx-line-spacing:4; }
+.kpi-free { -fx-text-fill:#34d399; }
+.kpi-busy { -fx-text-fill:#fb7185; }

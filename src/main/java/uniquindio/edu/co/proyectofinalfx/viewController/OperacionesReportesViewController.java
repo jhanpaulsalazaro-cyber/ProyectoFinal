@@ -22,7 +22,6 @@ public class OperacionesReportesViewController {
 
     // ELEMENTOS GRÁFICOS
 
-    @FXML private TextField txtDocumentoOperador;
     @FXML private TextField txtCodigoVenta;
 
     @FXML private TableView<Venta> tablaVentas;
@@ -82,6 +81,7 @@ public class OperacionesReportesViewController {
                 )
         );
 
+        tablaVentas.getItems().setAll(cineController.obtenerVentas());
         actualizarReportes();
     }
 
@@ -90,20 +90,19 @@ public class OperacionesReportesViewController {
     @FXML
     private void buscarVenta() {
 
-        String documento = txtDocumentoOperador.getText().trim();
         String codigoTexto = txtCodigoVenta.getText().trim();
 
-        if (documento.isEmpty() || codigoTexto.isEmpty()) {
+        if (codigoTexto.isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING,
-                    "Campos incompletos",
-                    "Ingresa el documento del operador y el código de venta.");
+                    "Campo incompleto",
+                    "Ingresa el código de venta.");
             return;
         }
 
         try {
             int codigo = Integer.parseInt(codigoTexto);
 
-            Venta venta = cineController.buscarVenta(documento, codigo);
+            Venta venta = cineController.buscarVenta(codigo);
 
             if (venta != null) {
                 tablaVentas.getItems().setAll(venta);
@@ -127,20 +126,19 @@ public class OperacionesReportesViewController {
     @FXML
     private void cancelarVenta() {
 
-        String documento = txtDocumentoOperador.getText().trim();
         String codigoTexto = txtCodigoVenta.getText().trim();
 
-        if (documento.isEmpty() || codigoTexto.isEmpty()) {
+        if (codigoTexto.isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING,
-                    "Campos incompletos",
-                    "Ingresa el documento del operador y el código de venta.");
+                    "Campo incompleto",
+                    "Ingresa el código de venta.");
             return;
         }
 
         try {
             int codigo = Integer.parseInt(codigoTexto);
 
-            boolean cancelada = cineController.cancelarVenta(documento, codigo);
+            boolean cancelada = cineController.cancelarVenta(codigo);
 
             if (cancelada) {
                 mostrarAlerta(Alert.AlertType.INFORMATION,
@@ -148,7 +146,7 @@ public class OperacionesReportesViewController {
                         "La venta se canceló correctamente.");
 
                 tablaVentas.getItems().setAll(
-                        cineController.obtenerVentas(documento)
+                        cineController.obtenerVentas()
                 );
 
                 actualizarReportes();

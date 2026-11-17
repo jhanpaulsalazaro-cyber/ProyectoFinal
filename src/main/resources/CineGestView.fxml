@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="uniquindio.edu.co.proyectofinalfx.viewController.CineGestController"
+            prefWidth="1440" prefHeight="900" styleClass="app-root">
+ <left>
+  <VBox prefWidth="258" spacing="18" styleClass="sidebar">
+   <padding><Insets top="24" right="16" bottom="18" left="16"/></padding>
+   <HBox alignment="CENTER_LEFT" spacing="12" styleClass="brand">
+    <StackPane prefWidth="42" prefHeight="42" styleClass="brand-icon"><Label text="▶" styleClass="brand-symbol"/></StackPane>
+    <VBox spacing="2"><Label text="CineGest" styleClass="brand-title"/><Label text="CINEMAUQ · JavaFX 21" styleClass="brand-subtitle"/></VBox>
+   </HBox>
+   <Button text="＋   Nuevo Cliente" onAction="#abrirRegistroCliente" maxWidth="Infinity" styleClass="primary-button"/>
+   <VBox spacing="7">
+    <Label text="OPERADOR" styleClass="nav-section"/>
+    <Button fx:id="btnCartelera" text="▣   Cartelera y Funciones" onAction="#mostrarCartelera" maxWidth="Infinity" styleClass="nav-button nav-active"/>
+    <Button fx:id="btnTaquilla" text="▤   Taquilla · Vender / Anular" onAction="#mostrarTaquilla" maxWidth="Infinity" styleClass="nav-button"/>
+    <Label text="ADMINISTRACIÓN" styleClass="nav-section nav-gap"/>
+    <Button fx:id="btnAdmin" text="⚙   Gestión del Cine" onAction="#mostrarAdministracion" maxWidth="Infinity" styleClass="nav-button"/>
+    <Button fx:id="btnReportes" text="▥   Reportes" onAction="#mostrarReportes" maxWidth="Infinity" styleClass="nav-button"/>
+   </VBox>
+   <Region VBox.vgrow="ALWAYS"/>
+   <VBox spacing="9" styleClass="sidebar-footer"><Label text="●  Turno activo · Sala Central" styleClass="status-label"/><Label text="Universidad del Quindío" styleClass="footer-caption"/></VBox>
+  </VBox>
+ </left>
+ <center>
+  <BorderPane styleClass="main-area">
+   <top><HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+    <padding><Insets top="16" right="30" bottom="16" left="30"/></padding>
+    <Label fx:id="lblTituloVista" text="Cartelera y Funciones" styleClass="page-title"/><Region HBox.hgrow="ALWAYS"/>
+    <VBox alignment="CENTER_RIGHT" spacing="2"><Label text="Clientes registrados" styleClass="muted-label"/><Label fx:id="lblTotalClientes" text="0" styleClass="counter-label"/></VBox>
+   </HBox></top>
+   <center>
+    <StackPane fx:id="contenedorVistas" styleClass="content-background">
+     <ScrollPane fx:id="scrollCartelera" fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll">
+      <content><VBox spacing="22" styleClass="page-content">
+       <VBox spacing="4"><Label text="Películas en cartelera" styleClass="section-title"/><Label text="Catálogo activo disponible para venta" styleClass="muted-label"/></VBox>
+       <FlowPane fx:id="contenedorPeliculas" hgap="14" vgap="14"/>
+       <VBox spacing="12" styleClass="panel"><Label text="Funciones programadas" styleClass="section-title"/>
+        <TableView fx:id="tablaFuncionesCartelera" prefHeight="280"><columns>
+         <TableColumn fx:id="colFuncionPelicula" text="Película" prefWidth="250"/><TableColumn fx:id="colFuncionSala" text="Sala" prefWidth="170"/>
+         <TableColumn fx:id="colFuncionFecha" text="Fecha y hora" prefWidth="190"/><TableColumn fx:id="colFuncionPrecio" text="Precio base" prefWidth="140"/>
+         <TableColumn fx:id="colFuncionDisponibilidad" text="Disponibilidad" prefWidth="160"/>
+        </columns></TableView>
+       </VBox>
+      </VBox></content>
+     </ScrollPane>
+     <ScrollPane fx:id="scrollTaquilla" fitToWidth="true" hbarPolicy="NEVER" visible="false" managed="false" styleClass="content-scroll">
+      <content><VBox spacing="18" styleClass="page-content"><TabPane tabClosingPolicy="UNAVAILABLE">
+       <tabs>
+        <Tab text="Nueva venta"><content><GridPane hgap="18" vgap="18">
+         <columnConstraints><ColumnConstraints percentWidth="43"/><ColumnConstraints percentWidth="57"/></columnConstraints>
+         <VBox spacing="14" styleClass="panel" GridPane.columnIndex="0">
+          <Label text="Datos de la venta" styleClass="section-title"/>
+          <Label text="Película" styleClass="field-label"/><ComboBox fx:id="cmbPeliculasVenta" maxWidth="Infinity" promptText="Selecciona película" onAction="#seleccionarPeliculaVenta"/>
+          <Label text="Función" styleClass="field-label"/><ComboBox fx:id="cmbFuncionesVenta" maxWidth="Infinity" promptText="Selecciona función" onAction="#seleccionarFuncionVenta"/>
+          <HBox alignment="CENTER_LEFT"><Label text="Cliente" styleClass="field-label"/><Region HBox.hgrow="ALWAYS"/><Hyperlink text="+ Registrar nuevo" onAction="#abrirRegistroCliente"/></HBox>
+          <ComboBox fx:id="cmbClientesVenta" maxWidth="Infinity" promptText="Documento · Nombre" onAction="#seleccionarClienteVenta"/>
+          <Label text="Tipo de entrada" styleClass="field-label"/><ComboBox fx:id="cmbTarifasVenta" maxWidth="Infinity" promptText="Selecciona tarifa" onAction="#calcularTotalVenta"/>
+          <Separator/><HBox><Label text="Asiento seleccionado" styleClass="muted-label"/><Region HBox.hgrow="ALWAYS"/><Label fx:id="lblAsientoSeleccionado" text="Ninguno" styleClass="accent-value"/></HBox>
+          <HBox><Label text="Total a cobrar" styleClass="field-label"/><Region HBox.hgrow="ALWAYS"/><Label fx:id="lblTotalVenta" text="\$ 0" styleClass="total-value"/></HBox>
+          <Button text="Confirmar venta" onAction="#registrarVenta" maxWidth="Infinity" styleClass="success-button"/>
+         </VBox>
+         <VBox spacing="14" styleClass="panel" GridPane.columnIndex="1">
+          <Label text="Mapa de sala" styleClass="section-title"/><Label fx:id="lblResumenAsientos" text="Selecciona una función para ver los asientos" styleClass="muted-label"/>
+          <StackPane prefHeight="28" maxWidth="420" styleClass="cinema-screen"><Label text="PANTALLA" styleClass="screen-label"/></StackPane>
+          <TilePane fx:id="contenedorAsientos" prefColumns="8" hgap="9" vgap="9" alignment="CENTER"/>
+          <HBox alignment="CENTER" spacing="18"><Label text="● Disponible" styleClass="legend-free"/><Label text="● Seleccionado" styleClass="legend-selected"/><Label text="● Ocupado" styleClass="legend-busy"/></HBox>
+         </VBox>
+        </GridPane></content></Tab>
+        <Tab text="Cancelar venta"><content><VBox spacing="14" styleClass="panel">
+         <Label text="Historial y cancelación de ventas" styleClass="section-title"/>
+         <HBox spacing="10"><TextField fx:id="txtBuscarVenta" promptText="Código de venta" HBox.hgrow="ALWAYS"/><Button text="Buscar" onAction="#buscarVenta" styleClass="secondary-button"/><Button text="Mostrar todas" onAction="#mostrarVentas" styleClass="secondary-button"/></HBox>
+         <TableView fx:id="tablaVentas" prefHeight="420"><columns>
+          <TableColumn fx:id="colVentaCodigo" text="Código" prefWidth="80"/><TableColumn fx:id="colVentaFecha" text="Fecha venta" prefWidth="140"/><TableColumn fx:id="colVentaCliente" text="Cliente" prefWidth="170"/>
+          <TableColumn fx:id="colVentaFuncion" text="Función" prefWidth="190"/><TableColumn fx:id="colVentaAsiento" text="Asiento" prefWidth="100"/>
+          <TableColumn fx:id="colVentaValor" text="Total" prefWidth="120"/><TableColumn fx:id="colVentaEstado" text="Estado" prefWidth="120"/>
+         </columns></TableView><HBox alignment="CENTER_RIGHT"><Button text="Anular venta seleccionada" onAction="#cancelarVenta" styleClass="danger-button"/></HBox>
+        </VBox></content></Tab>
+       </tabs></TabPane></VBox></content>
+     </ScrollPane>
+     <ScrollPane fx:id="scrollAdmin" fitToWidth="true" hbarPolicy="NEVER" visible="false" managed="false" styleClass="content-scroll">
+      <content><VBox styleClass="page-content"><TabPane tabClosingPolicy="UNAVAILABLE"><tabs>
+       <Tab text="Películas"><content><VBox spacing="14" styleClass="panel">
+        <Label text="Registrar película" styleClass="section-title"/>
+        <GridPane hgap="10" vgap="10">
+         <columnConstraints><ColumnConstraints percentWidth="33"/><ColumnConstraints percentWidth="34"/><ColumnConstraints percentWidth="33"/></columnConstraints>
+         <TextField fx:id="txtCodigoPelicula" promptText="Código" GridPane.columnIndex="0"/>
+         <TextField fx:id="txtNombrePelicula" promptText="Nombre de película" GridPane.columnIndex="1"/>
+         <TextField fx:id="txtDuracionPelicula" promptText="Duración (min)" GridPane.columnIndex="2"/>
+         <ComboBox fx:id="cmbGeneroPelicula" promptText="Género" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+         <ComboBox fx:id="cmbClasificacionPelicula" promptText="Clasificación" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+         <Button text="Guardar película" onAction="#guardarPelicula" maxWidth="Infinity" styleClass="primary-button" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+         <ComboBox fx:id="cmbEstadoPelicula" promptText="Estado" maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+         <Button text="Modificar seleccionada" onAction="#modificarPelicula" maxWidth="Infinity" styleClass="secondary-button" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+         <Button text="Deshabilitar seleccionada" onAction="#deshabilitarPelicula" maxWidth="Infinity" styleClass="danger-button" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+        </GridPane>
+        <TableView fx:id="tablaPeliculasAdmin" prefHeight="400"><columns>
+         <TableColumn fx:id="colAdminCodigo" text="Código" prefWidth="100"/><TableColumn fx:id="colAdminNombre" text="Película" prefWidth="300"/>
+         <TableColumn fx:id="colAdminGenero" text="Género" prefWidth="180"/><TableColumn fx:id="colAdminDuracion" text="Duración" prefWidth="120"/>
+         <TableColumn fx:id="colAdminEstado" text="Estado" prefWidth="160"/>
+        </columns></TableView>
+       </VBox></content></Tab>
+       <Tab text="Salas"><content><VBox styleClass="panel" spacing="14">
+        <Label text="Gestión de salas" styleClass="section-title"/>
+        <GridPane hgap="10" vgap="10">
+         <columnConstraints><ColumnConstraints percentWidth="33"/><ColumnConstraints percentWidth="34"/><ColumnConstraints percentWidth="33"/></columnConstraints>
+         <TextField fx:id="txtCodigoSala" promptText="Código" GridPane.columnIndex="0"/>
+         <TextField fx:id="txtNombreSala" promptText="Nombre o número de sala" GridPane.columnIndex="1"/>
+         <TextField fx:id="txtCapacidadSala" promptText="Capacidad (asientos)" GridPane.columnIndex="2"/>
+         <ComboBox fx:id="cmbEstadoSala" promptText="Estado" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+         <Button text="Registrar sala" onAction="#registrarSala" maxWidth="Infinity" styleClass="primary-button" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+         <HBox spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="2">
+          <Button text="Modificar" onAction="#modificarSala" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="secondary-button"/>
+          <Button text="Deshabilitar" onAction="#deshabilitarSala" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="danger-button"/>
+         </HBox>
+        </GridPane>
+        <TableView fx:id="tablaSalas" prefHeight="360"><columns>
+         <TableColumn fx:id="colSalaCodigo" text="Código" prefWidth="100"/><TableColumn fx:id="colSalaNombre" text="Sala" prefWidth="260"/>
+         <TableColumn fx:id="colSalaCapacidad" text="Capacidad" prefWidth="140"/><TableColumn fx:id="colSalaEstado" text="Estado" prefWidth="200"/>
+        </columns></TableView>
+       </VBox></content></Tab>
+       <Tab text="Funciones"><content><VBox styleClass="panel" spacing="14">
+        <Label text="Programación de funciones" styleClass="section-title"/>
+        <Label text="No se pueden programar funciones en salas fuera de servicio ni con películas deshabilitadas." styleClass="muted-label" wrapText="true"/>
+        <GridPane hgap="10" vgap="10">
+         <columnConstraints><ColumnConstraints percentWidth="33"/><ColumnConstraints percentWidth="34"/><ColumnConstraints percentWidth="33"/></columnConstraints>
+         <TextField fx:id="txtCodigoFuncion" promptText="Código" GridPane.columnIndex="0"/>
+         <ComboBox fx:id="cmbPeliculaFuncion" promptText="Película" maxWidth="Infinity" GridPane.columnIndex="1"/>
+         <ComboBox fx:id="cmbSalaFuncion" promptText="Sala" maxWidth="Infinity" GridPane.columnIndex="2"/>
+         <DatePicker fx:id="fechaFuncion" promptText="Fecha" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+         <TextField fx:id="txtHoraFuncion" promptText="Hora (HH:mm)" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+         <TextField fx:id="txtValorFuncion" promptText="Valor de entrada" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+         <Button text="Programar función" onAction="#programarFuncion" maxWidth="Infinity" styleClass="primary-button" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+        </GridPane>
+        <TableView fx:id="tablaFuncionesAdmin" prefHeight="340"><columns>
+         <TableColumn fx:id="colAdminFuncionCodigo" text="Código" prefWidth="90"/><TableColumn fx:id="colAdminFuncionPelicula" text="Película" prefWidth="230"/>
+         <TableColumn fx:id="colAdminFuncionSala" text="Sala" prefWidth="140"/><TableColumn fx:id="colAdminFuncionFecha" text="Fecha y hora" prefWidth="180"/>
+         <TableColumn fx:id="colAdminFuncionValor" text="Valor" prefWidth="120"/><TableColumn fx:id="colAdminFuncionEstado" text="Estado" prefWidth="130"/>
+        </columns></TableView>
+       </VBox></content></Tab>
+       <Tab text="Tarifas"><content><VBox styleClass="panel" spacing="14">
+        <Label text="Tarifas por tipo de cliente" styleClass="section-title"/>
+        <HBox spacing="10">
+         <ComboBox fx:id="cmbTipoTarifa" promptText="Tipo de entrada" prefWidth="220"/>
+         <TextField fx:id="txtValorTarifa" promptText="Valor" HBox.hgrow="ALWAYS"/>
+         <Button text="Guardar tarifa" onAction="#guardarTarifa" styleClass="primary-button"/>
+        </HBox>
+        <TableView fx:id="tablaTarifas" prefHeight="260"><columns>
+         <TableColumn fx:id="colTarifaTipo" text="Tipo de entrada" prefWidth="260"/><TableColumn fx:id="colTarifaValor" text="Valor" prefWidth="200"/>
+        </columns></TableView>
+       </VBox></content></Tab>
+      </tabs></TabPane></VBox></content>
+     </ScrollPane>
+     <ScrollPane fx:id="scrollReportes" fitToWidth="true" hbarPolicy="NEVER" visible="false" managed="false" styleClass="content-scroll">
+      <content><VBox spacing="18" styleClass="page-content">
+       <GridPane hgap="14"><columnConstraints><ColumnConstraints percentWidth="33.3"/><ColumnConstraints percentWidth="33.3"/><ColumnConstraints percentWidth="33.4"/></columnConstraints>
+        <VBox styleClass="kpi-card" spacing="8"><Label text="Entradas vendidas" styleClass="muted-label"/><Label fx:id="lblKpiEntradas" text="0" styleClass="kpi-value"/></VBox>
+        <VBox styleClass="kpi-card" spacing="8" GridPane.columnIndex="1"><Label text="Ingresos totales" styleClass="muted-label"/><Label fx:id="lblKpiIngresos" text="\$ 0" styleClass="kpi-value accent-value"/></VBox>
+        <VBox styleClass="kpi-card" spacing="8" GridPane.columnIndex="2"><Label text="Película más vendida" styleClass="muted-label"/><Label fx:id="lblKpiPelicula" text="—" styleClass="kpi-value"/></VBox>
+       </GridPane>
+       <VBox spacing="12" styleClass="panel"><Label text="Ocupación y funciones" styleClass="section-title"/>
+        <HBox spacing="10"><DatePicker fx:id="fechaReporte" promptText="Filtrar por fecha"/><Button text="Consultar" onAction="#actualizarReportes" styleClass="secondary-button"/><Button text="Ver todas" onAction="#limpiarFiltroReporte" styleClass="secondary-button"/></HBox>
+        <TableView fx:id="tablaReportes" prefHeight="420"><columns>
+         <TableColumn fx:id="colReportePelicula" text="Película" prefWidth="240"/><TableColumn fx:id="colReporteFecha" text="Fecha / hora" prefWidth="180"/>
+         <TableColumn fx:id="colReporteSala" text="Sala" prefWidth="160"/><TableColumn fx:id="colReporteOcupados" text="Ocupados" prefWidth="120"/>
+         <TableColumn fx:id="colReporteDisponibles" text="Disponibles" prefWidth="120"/><TableColumn fx:id="colReporteOcupacion" text="Ocupación" prefWidth="120"/>
+        </columns></TableView>
+       </VBox>
+      </VBox></content>
+     </ScrollPane>
+    </StackPane>
+   </center>
+  </BorderPane>
+ </center>
+</BorderPane>

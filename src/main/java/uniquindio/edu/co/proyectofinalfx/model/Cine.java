@@ -2,6 +2,7 @@
 package uniquindio.edu.co.proyectofinalfx.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,11 +61,14 @@ public class Cine {
             return null;
         }
 
+        // Persona guarda el documento sin espacios; se compara igual.
+        String documentoBuscado = documento.trim();
+
         for (Persona persona : listCinePersonas) {
 
             if (persona != null
                     && persona.getDocumentoIdentidad() != null
-                    && persona.getDocumentoIdentidad().equals(documento)) {
+                    && persona.getDocumentoIdentidad().equals(documentoBuscado)) {
 
                 return persona;
             }
@@ -399,40 +403,110 @@ public class Cine {
         return administrador.agregarOActualizarTarifa(listCineTarifas, tipo, valor);
     }
 
-    // ------------------------------ OPERACIONES DEL OPERADOR ------------------------------
+    // ------------------------------ VENTAS ------------------------------
 
-    public Venta registrarVenta(String documentoOperador, int codigoVenta,
-                                Funcion funcion, Cliente cliente,
+    /**
+     * Registra una venta sin exigir el documento del operador.
+     * Verifica que el cliente y la función estén registrados en el cine,
+     * que la función esté programada y que el asiento esté disponible.
+     */
+    public Venta registrarVenta(int codigoVenta, Funcion funcion, Cliente cliente,
                                 Asiento asiento, Tarifa tarifa) {
-        Operador operador = buscarOperadorEnCine(documentoOperador);
 
-        if (operador == null) {
+        if (codigoVenta <= 0 || funcion == null || cliente == null || asiento == null) {
             return null;
         }
 
-        return operador.registrarVenta(
-                listCineVentas, codigoVenta, funcion, cliente, asiento, tarifa
+        // El cliente y la función deben existir en el cine.
+        if (buscarClienteEnCine(cliente.getDocumentoIdentidad()) != cliente
+                || buscarFuncionEnCine(funcion.getCodigo()) != funcion) {
+            return null;
+        }
+
+        if (funcion.getEstadoFuncion() != EstadoFuncion.PROGRAMADA) {
+            return null;
+        }
+
+        // El asiento debe pertenecer a la sala y estar libre en esta función.
+        if (!funcion.asientoEstaDisponible(asiento)) {
+            return null;
+        }
+
+        // Evitar códigos de venta repetidos.
+        if (buscarVentaEnCine(codigoVenta) != null) {
+            return null;
+        }
+
+        // Valor de la entrada: tarifa del tipo de cliente o valor base de la función.
+        double precio;
+
+        if (tarifa == null) {
+            precio = funcion.getValorBase();
+        } else {
+            if (tarifa.tipoCliente() != cliente.getTipoCliente()) {
+                return null;
+            }
+            precio = tarifa.valor();
+        }
+
+        if (!Double.isFinite(precio) || precio < 0) {
+            return null;
+        }
+
+        // La venta se registra sin operador asociado (operador = null).
+        Venta venta = new Venta(
+                codigoVenta,
+                LocalDateTime.now(),
+                precio,
+                EstadoVenta.ACTIVA,
+                cliente,
+                null,
+                tarifa,
+                asiento,
+                funcion
         );
+
+        listCineVentas.add(venta);
+        funcion.getListFuncionVentas().add(venta);
+        asiento.setEstadoAsiento(EstadoAsiento.OCUPADO);
+
+        return venta;
     }
 
-    public Venta buscarVenta(String documentoOperador, int codigo) {
-        Operador operador = buscarOperadorEnCine(documentoOperador);
-
-        if (operador == null) {
-            return null;
-        }
-
-        return operador.buscarVenta(listCineVentas, codigo);
+    public Venta buscarVenta(int codigo) {
+        return buscarVentaEnCine(codigo);
     }
 
-    public boolean cancelarVenta(String documentoOperador, int codigo) {
-        Operador operador = buscarOperadorEnCine(documentoOperador);
+    /**
+     * Cancela una venta activa y libera su asiento.
+     */
+    public boolean cancelarVenta(int codigo) {
 
-        if (operador == null) {
+        Venta venta = buscarVentaEnCine(codigo);
+
+        if (venta == null
+                || venta.getEstadoVenta() != EstadoVenta.ACTIVA
+                || venta.getAsiento() == null) {
             return false;
         }
 
-        return operador.cancelarVenta(listCineVentas, codigo);
+        venta.setEstadoVenta(EstadoVenta.CANCELADA);
+
+        // Liberar el asiento solo si no tiene otra venta activa.
+        for (Venta otraVenta : listCineVentas) {
+            if (otraVenta != null
+                    && otraVenta.getAsiento() == venta.getAsiento()
+                    && otraVenta.getEstadoVenta() == EstadoVenta.ACTIVA) {
+                return true;
+            }
+        }
+
+        venta.getAsiento().setEstadoAsiento(EstadoAsiento.DISPONIBLE);
+        return true;
+    }
+
+    public List<Venta> obtenerVentas() {
+        return new ArrayList<>(listCineVentas);
     }
 
     public List<Venta> obtenerVentasOperador(String documentoOperador) {

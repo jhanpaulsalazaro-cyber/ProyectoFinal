@@ -26,10 +26,6 @@
                styleClass="subtitle"/>
 
         <HBox spacing="10" alignment="CENTER">
-            <TextField fx:id="txtDocumentoOperador"
-                       promptText="Documento del operador"
-                       prefWidth="220"/>
-
             <TextField fx:id="txtCodigoVenta"
                        promptText="Código de venta"
                        prefWidth="200"/>

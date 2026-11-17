@@ -4,6 +4,7 @@ module uniquindio.edu.co.proyectofinalfx {
     requires javafx.fxml;
     requires java.desktop;
 
+
     exports uniquindio.edu.co.proyectofinalfx;
     exports uniquindio.edu.co.proyectofinalfx.model;
     exports uniquindio.edu.co.proyectofinalfx.controller;

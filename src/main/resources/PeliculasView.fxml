@@ -94,10 +94,6 @@
 
         <HBox spacing="12" alignment="CENTER">
 
-            <TextField fx:id="txtDocumentoOperador"
-                       promptText="Documento del operador"
-                       prefWidth="250"/>
-
             <TextField fx:id="txtDocumentoCliente"
                        promptText="Documento del cliente"
                        prefWidth="250"/>

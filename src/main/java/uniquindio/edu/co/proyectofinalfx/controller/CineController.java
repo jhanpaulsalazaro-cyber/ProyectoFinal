@@ -1,8 +1,10 @@
+
 package uniquindio.edu.co.proyectofinalfx.controller;
 
 import uniquindio.edu.co.proyectofinalfx.model.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,7 +14,6 @@ public class CineController {
     private Cine cine;
 
     // CONSTRUCTOR
-
     public CineController() {
 
         cine = new Cine(
@@ -53,9 +54,45 @@ public class CineController {
         );
 
         cine.agregarPersona(operador2);
+
+        cargarDatosIniciales(administrador.getDocumentoIdentidad());
     }
 
-// ------------------------------ CLIENTES ------------------------------
+    // DATOS DE PRUEBA: se registran con los mismos métodos del administrador.
+    private void cargarDatosIniciales(String documentoAdmin) {
+
+        Pelicula pelicula1 = new Pelicula(1, 125, "Dune: Parte Dos",
+                EstadoPelicula.DISPONIBLE, GeneroPelicula.ACCION,
+                ClasificacionPelicula.MAYORES_12);
+        Pelicula pelicula2 = new Pelicula(2, 96, "Intensamente 2",
+                EstadoPelicula.DISPONIBLE, GeneroPelicula.ANIMACION,
+                ClasificacionPelicula.TODOS);
+
+        cine.registrarPelicula(documentoAdmin, pelicula1);
+        cine.registrarPelicula(documentoAdmin, pelicula2);
+
+        Sala sala1 = new Sala(1, 24, "Sala 1", EstadoSala.DISPONIBLE, null);
+        sala1.generarAsientos(3, 8);
+        Sala sala2 = new Sala(2, 16, "Sala 2", EstadoSala.DISPONIBLE, null);
+        sala2.generarAsientos(2, 8);
+
+        cine.registrarSala(documentoAdmin, sala1);
+        cine.registrarSala(documentoAdmin, sala2);
+
+        LocalDate hoy = LocalDate.now();
+
+        cine.programarFuncion(documentoAdmin, new Funcion(1, hoy, LocalTime.of(18, 0),
+                15000, EstadoFuncion.PROGRAMADA, null, sala1, pelicula1));
+        cine.programarFuncion(documentoAdmin, new Funcion(2, hoy, LocalTime.of(16, 30),
+                12000, EstadoFuncion.PROGRAMADA, null, sala2, pelicula2));
+
+        cine.agregarOActualizarTarifa(documentoAdmin, TipoCliente.GENERAL, 15000);
+        cine.agregarOActualizarTarifa(documentoAdmin, TipoCliente.ESTUDIANTE, 11000);
+        cine.agregarOActualizarTarifa(documentoAdmin, TipoCliente.NINO, 9000);
+        cine.agregarOActualizarTarifa(documentoAdmin, TipoCliente.ADULTO_MAYOR, 9000);
+    }
+
+    // ------------------------------ PERSONAS ------------------------------
 
     public boolean registrarCliente(Cliente cliente) {
         return cine.agregarPersona(cliente);
@@ -65,9 +102,21 @@ public class CineController {
         return cine.buscarClienteEnCine(documento);
     }
 
+    public Persona buscarPersona(String documento) {
+        return cine.buscarPersona(documento);
+    }
+
+    public Administrador buscarAdministrador(String documento) {
+        return cine.buscarAdministradorEnCine(documento);
+    }
+
+    public Operador buscarOperador(String documento) {
+        return cine.buscarOperadorEnCine(documento);
+    }
+
     public List<Cliente> obtenerClientes() {
 
-        List<Cliente> clientes = new java.util.ArrayList<>();
+        List<Cliente> clientes = new ArrayList<>();
 
         for (Persona persona : cine.getListCinePersonas()) {
 
@@ -78,7 +127,6 @@ public class CineController {
 
         return clientes;
     }
-
 
     public List<Operador> obtenerOperadores() {
 
@@ -94,7 +142,6 @@ public class CineController {
         return operadores;
     }
 
-
     // ------------------------------ PELÍCULAS ------------------------------
 
     public List<Pelicula> obtenerPeliculas() {
@@ -104,7 +151,6 @@ public class CineController {
     public Pelicula buscarPelicula(int codigo) {
         return cine.buscarPeliculaEnCine(codigo);
     }
-
 
     // ------------------------------ ADMINISTRACIÓN DE PELÍCULAS ------------------------------
 
@@ -144,6 +190,11 @@ public class CineController {
 
     public Sala buscarSalaAdministrador(String documentoAdministrador, int codigo) {
         return cine.buscarSala(documentoAdministrador, codigo);
+    }
+
+    // BÚSQUEDA DIRECTA DE SALA POR CÓDIGO
+    public Sala buscarSalaEnCine(int codigo) {
+        return cine.buscarSalaEnCine(codigo);
     }
 
     public boolean modificarSala(String documentoAdministrador, int codigo,
@@ -188,33 +239,38 @@ public class CineController {
         );
     }
 
-
     // ------------------------------ VENTAS ------------------------------
 
-    public Venta registrarVenta(String documentoOperador, int codigoVenta,
-                                Funcion funcion, Cliente cliente,
+    public Venta registrarVenta(int codigoVenta, Funcion funcion, Cliente cliente,
                                 Asiento asiento, Tarifa tarifa) {
 
-        return cine.registrarVenta(
-                documentoOperador,
-                codigoVenta,
-                funcion,
-                cliente,
-                asiento,
-                tarifa
-        );
+        return cine.registrarVenta(codigoVenta, funcion, cliente, asiento, tarifa);
     }
 
-    public Venta buscarVenta(String documentoOperador, int codigo) {
-        return cine.buscarVenta(documentoOperador, codigo);
+    public Venta buscarVenta(int codigo) {
+        return cine.buscarVenta(codigo);
     }
 
-    public boolean cancelarVenta(String documentoOperador, int codigo) {
-        return cine.cancelarVenta(documentoOperador, codigo);
+    public boolean cancelarVenta(int codigo) {
+        return cine.cancelarVenta(codigo);
     }
 
-    public List<Venta> obtenerVentas(String documentoOperador) {
-        return cine.obtenerVentasOperador(documentoOperador);
+    public List<Venta> obtenerVentas() {
+        return cine.obtenerVentas();
+    }
+
+    // Código consecutivo para una nueva venta (mayor código + 1).
+    public int generarCodigoVenta() {
+
+        int mayor = 0;
+
+        for (Venta venta : cine.getListCineVentas()) {
+            if (venta != null && venta.getCodigo() > mayor) {
+                mayor = venta.getCodigo();
+            }
+        }
+
+        return mayor + 1;
     }
 
     // ------------------------------ REPORTES ------------------------------
@@ -241,11 +297,23 @@ public class CineController {
         return cine.buscarFuncionEnCine(codigo);
     }
 
+    public List<Funcion> obtenerFunciones() {
+        return cine.getListCineFunciones();
+    }
+
+    public List<Sala> obtenerSalas() {
+        return cine.getListCineSalas();
+    }
+
+    public List<Tarifa> obtenerTarifas() {
+        return cine.getListCineTarifas();
+    }
+
     // ------------------------------ ASIENTOS ------------------------------
 
     public List<Asiento> obtenerAsientosDisponibles(int codigoFuncion) {
 
-        List<Asiento> asientosDisponibles = new java.util.ArrayList<>();
+        List<Asiento> asientosDisponibles = new ArrayList<>();
 
         Funcion funcion = cine.buscarFuncionEnCine(codigoFuncion);
 

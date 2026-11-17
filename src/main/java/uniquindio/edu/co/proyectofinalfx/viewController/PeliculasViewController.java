@@ -26,7 +26,6 @@ public class PeliculasViewController {
     @FXML private TextField txtCodigoFuncion;
     @FXML private TextField txtAsiento;
     @FXML private TextField txtDocumentoCliente;
-    @FXML private TextField txtDocumentoOperador;
     @FXML private TableView<Pelicula> tablaPeliculas;
     @FXML private TextField txtCodigoVenta;
 
@@ -222,29 +221,15 @@ public class PeliculasViewController {
         );
     }
 
-    private Operador buscarOperador(String documento) {
-
-        for (Operador operador : cineController.obtenerOperadores()) {
-
-            if (operador.getDocumentoIdentidad().equals(documento)) {
-                return operador;
-            }
-        }
-
-        return null;
-    }
-
-
     @FXML
     private void registrarVenta() {
 
-        String documentoOperador = txtDocumentoOperador.getText().trim();
         String documentoCliente = txtDocumentoCliente.getText().trim();
         String codigoFuncionTexto = txtCodigoFuncion.getText().trim();
         String codigoAsientoTexto = txtAsiento.getText().trim();
         String codigoVentaTexto = txtCodigoVenta.getText().trim();
 
-        if (documentoOperador.isEmpty() || documentoCliente.isEmpty()
+        if (documentoCliente.isEmpty()
                 || codigoFuncionTexto.isEmpty() || codigoAsientoTexto.isEmpty()
                 || codigoVentaTexto.isEmpty()) {
 
@@ -258,13 +243,12 @@ public class PeliculasViewController {
             int codigoFuncion = Integer.parseInt(codigoFuncionTexto);
             int codigoAsiento = Integer.parseInt(codigoAsientoTexto);
 
-            Operador operador = buscarOperador(documentoOperador);
             Cliente cliente = cineController.buscarCliente(documentoCliente);
             Funcion funcion = cineController.buscarFuncion(codigoFuncion);
 
-            if (operador == null || cliente == null) {
+            if (cliente == null) {
                 mostrarAlerta(Alert.AlertType.WARNING, "Datos incorrectos",
-                        "Verifica el documento del operador y del cliente.");
+                        "Verifica que el documento del cliente esté registrado en el sistema.");
                 return;
             }
 
@@ -285,7 +269,6 @@ public class PeliculasViewController {
             Tarifa tarifa = cineController.obtenerTarifa(cliente.getTipoCliente());
 
             Venta venta = cineController.registrarVenta(
-                    documentoOperador,
                     codigoVenta,
                     funcion,
                     cliente,

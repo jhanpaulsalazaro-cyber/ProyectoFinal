@@ -170,4 +170,126 @@ class CineTest {
         assertEquals(1, resultado.size());
         assertEquals(funcion1, resultado.get(0));
     }
+
+    // ------------------------------ CLIENTES Y VENTAS ------------------------------
+
+    private Cine cine;
+    private Cliente cliente;
+    private Funcion funcion;
+    private Asiento asiento1;
+
+    /** Cine con un cliente, una sala de 4 asientos y una función programada. */
+    private void prepararCineConFuncion() {
+        cine = new Cine("CINEMAUQ", "123", "Armenia");
+
+        cliente = new Cliente("1094", "Ana", TipoCliente.ESTUDIANTE);
+        cine.agregarPersona(cliente);
+
+        Sala sala = new Sala(1, 4, "Sala 1", EstadoSala.DISPONIBLE, null);
+        sala.generarAsientos(1, 4);
+        cine.getListCineSalas().add(sala);
+        asiento1 = sala.buscarAsiento(1);
+
+        Pelicula pelicula = new Pelicula(1, 120, "Avatar",
+                EstadoPelicula.DISPONIBLE, GeneroPelicula.ACCION,
+                ClasificacionPelicula.MAYORES_12);
+
+        funcion = new Funcion(1, LocalDate.now(), LocalTime.of(18, 0),
+                20000, EstadoFuncion.PROGRAMADA, null, sala, pelicula);
+        cine.getListCineFunciones().add(funcion);
+    }
+
+    @Test
+    void registrarCliente() {
+        prepararCineConFuncion();
+
+        Cliente nuevo = new Cliente("2000", "Luis", TipoCliente.GENERAL);
+
+        assertTrue(cine.agregarPersona(nuevo));
+        assertTrue(cine.getListCinePersonas().contains(nuevo));
+    }
+
+    @Test
+    void buscarClientePorDocumento() {
+        prepararCineConFuncion();
+
+        assertEquals(cliente, cine.buscarClienteEnCine("1094"));
+        // El documento se compara sin espacios sobrantes.
+        assertEquals(cliente, cine.buscarClienteEnCine(" 1094 "));
+        assertNull(cine.buscarClienteEnCine("9999"));
+    }
+
+    @Test
+    void evitarDocumentosDuplicados() {
+        prepararCineConFuncion();
+
+        Cliente repetido = new Cliente("1094", "Otro", TipoCliente.GENERAL);
+
+        assertFalse(cine.agregarPersona(repetido));
+        assertEquals(cliente, cine.buscarClienteEnCine("1094"));
+    }
+
+    @Test
+    void registrarVentaSinDocumentoDeOperador() {
+        prepararCineConFuncion();
+        Tarifa tarifa = new Tarifa(TipoCliente.ESTUDIANTE, 12000);
+
+        Venta venta = cine.registrarVenta(1, funcion, cliente, asiento1, tarifa);
+
+        assertNotNull(venta);
+        assertNull(venta.getOperador());
+        assertEquals(EstadoVenta.ACTIVA, venta.getEstadoVenta());
+        assertEquals(12000, venta.getValorPagado());
+        assertNotNull(venta.getFechaHoraVenta());
+        assertEquals(EstadoAsiento.OCUPADO, asiento1.getEstadoAsiento());
+        assertTrue(cine.getListCineVentas().contains(venta));
+        assertTrue(funcion.getListFuncionVentas().contains(venta));
+    }
+
+    @Test
+    void rechazarVentaConClienteInexistente() {
+        prepararCineConFuncion();
+
+        Cliente noRegistrado = new Cliente("5555", "Pedro", TipoCliente.GENERAL);
+
+        assertNull(cine.registrarVenta(1, funcion, noRegistrado, asiento1, null));
+        assertTrue(cine.getListCineVentas().isEmpty());
+        assertEquals(EstadoAsiento.DISPONIBLE, asiento1.getEstadoAsiento());
+    }
+
+    @Test
+    void rechazarVentaConAsientoNoDisponible() {
+        prepararCineConFuncion();
+
+        Cliente otroCliente = new Cliente("3000", "Sara", TipoCliente.GENERAL);
+        cine.agregarPersona(otroCliente);
+
+        assertNotNull(cine.registrarVenta(1, funcion, cliente, asiento1, null));
+        assertNull(cine.registrarVenta(2, funcion, otroCliente, asiento1, null));
+        assertEquals(1, cine.getListCineVentas().size());
+    }
+
+    @Test
+    void buscarVentaPorCodigo() {
+        prepararCineConFuncion();
+
+        Venta venta = cine.registrarVenta(7, funcion, cliente, asiento1, null);
+
+        assertEquals(venta, cine.buscarVenta(7));
+        assertNull(cine.buscarVenta(8));
+    }
+
+    @Test
+    void cancelarVentaCorrectamente() {
+        prepararCineConFuncion();
+
+        cine.registrarVenta(1, funcion, cliente, asiento1, null);
+
+        assertTrue(cine.cancelarVenta(1));
+        assertEquals(EstadoVenta.CANCELADA, cine.buscarVenta(1).getEstadoVenta());
+        assertEquals(EstadoAsiento.DISPONIBLE, asiento1.getEstadoAsiento());
+        assertTrue(funcion.asientoEstaDisponible(asiento1));
+        // No se puede cancelar dos veces.
+        assertFalse(cine.cancelarVenta(1));
+    }
 }

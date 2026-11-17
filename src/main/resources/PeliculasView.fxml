@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="uniquindio.edu.co.proyectofinalfx.viewController.PeliculasViewController"
+      alignment="TOP_CENTER"
+      spacing="18"
+      prefWidth="1000"
+      prefHeight="650"
+      stylesheets="@main.css">
+
+    <padding>
+        <Insets top="25" right="35" bottom="25" left="35"/>
+    </padding>
+
+    <children>
+
+        <Label text="GESTIÓN DE PELÍCULAS"
+               styleClass="main-title"/>
+
+        <Label text="Consulta de películas y programación"
+               styleClass="subtitle"/>
+
+        <HBox spacing="12" alignment="CENTER">
+            <TextField fx:id="txtBuscarPelicula"
+                       promptText="Código o nombre de la película"
+                       prefWidth="300"/>
+
+            <Button fx:id="btnBuscarPelicula"
+                    text="BUSCAR"
+                    styleClass="button"
+                    onAction="#buscarPelicula"/>
+
+            <Button fx:id="btnMostrarPeliculas"
+                    text="MOSTRAR TODAS"
+                    styleClass="button"
+                    onAction="#mostrarPeliculas"/>
+        </HBox>
+
+        <Label text="PELÍCULAS DISPONIBLES"
+               styleClass="section-title"/>
+
+        <TableView fx:id="tablaPeliculas"
+                   prefHeight="230"
+                   prefWidth="850">
+
+            <columns>
+                <TableColumn fx:id="colCodigo"
+                             text="Código"
+                             prefWidth="120"/>
+
+                <TableColumn fx:id="colNombre"
+                             text="Película"
+                             prefWidth="350"/>
+
+                <TableColumn fx:id="colDuracion"
+                             text="Duración"
+                             prefWidth="150"/>
+
+                <TableColumn fx:id="colClasificacion"
+                             text="Clasificación"
+                             prefWidth="200"/>
+            </columns>
+
+        </TableView>
+
+        <Label text="SELECCIÓN DE FUNCIÓN Y ASIENTO"
+               styleClass="section-title"/>
+
+        <HBox spacing="12" alignment="CENTER">
+            <TextField fx:id="txtCodigoFuncion"
+                       promptText="Código de función"
+                       prefWidth="200"/>
+
+            <Button fx:id="btnConsultarFuncion"
+                    text="CONSULTAR FUNCIÓN"
+                    styleClass="button"
+                    onAction="#consultarFuncion"/>
+
+            <TextField fx:id="txtAsiento"
+                       promptText="Código de asiento"
+                       prefWidth="200"/>
+        </HBox>
+
+        <HBox spacing="12" alignment="CENTER">
+
+            <TextField fx:id="txtDocumentoOperador"
+                       promptText="Documento del operador"
+                       prefWidth="250"/>
+
+            <TextField fx:id="txtDocumentoCliente"
+                       promptText="Documento del cliente"
+                       prefWidth="250"/>
+
+            <TextField fx:id="txtCodigoVenta"
+                       promptText="Código de venta"
+                       prefWidth="180"/>
+
+            <Button fx:id="btnBuscarCliente"
+                    text="BUSCAR CLIENTE"
+                    styleClass="button"
+                    onAction="#buscarCliente"/>
+
+            <Button fx:id="btnRegistrarVenta"
+                    text="REGISTRAR VENTA"
+                    styleClass="button"
+                    onAction="#registrarVenta"/>
+        </HBox>
+
+        <Button fx:id="btnVolver"
+                text="VOLVER AL INICIO"
+                styleClass="button"
+                onAction="#volverPortada"/>
+
+    </children>
+</VBox>

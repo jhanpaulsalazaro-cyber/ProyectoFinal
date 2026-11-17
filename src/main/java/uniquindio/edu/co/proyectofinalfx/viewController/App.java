@@ -1,3 +1,4 @@
+
 package uniquindio.edu.co.proyectofinalfx.viewController;
 
 import javafx.application.Application;
@@ -14,25 +15,29 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         URL recurso = getClass().getResource(
-                "/PrincipalView.fxml"
+                "/PortadaView.fxml"
         );
 
         if (recurso == null) {
             throw new IOException(
-                    "No se encontró PrincipalView.fxml. " +
+                    "No se encontró PortadaView.fxml. " +
                             "Verifica src/main/resources."
             );
         }
 
         FXMLLoader loader = new FXMLLoader(recurso);
 
-        Scene scene = new Scene(loader.load(), 900, 650);
+        Scene scene = new Scene(loader.load(), 900, 600);
 
-        stage.setTitle("CINEMAFX | Universidad del Quindío");
+        stage.setTitle("CINEMAUQ | Universidad del Quindío");
         stage.setMinWidth(850);
         stage.setMinHeight(550);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
